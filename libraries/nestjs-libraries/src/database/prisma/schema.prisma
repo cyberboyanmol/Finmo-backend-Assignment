@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    user_id           String         @id @default(uuid())
+    email             String         @unique
+    password          String
+    first_name        String
+    last_name         String?
+    is_email_verified Boolean
+    created_at        DateTime       @default(now())
+    updated_at        DateTime       @updatedAt
+    refresh_token     RefreshToken[]
+    user_account      UserAccount?
+}
+
+model RefreshToken {
+    refresh_token_id String @id @default(uuid())
+    token            String @unique
+    user             User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+    user_id          String
+}
+
+model UserAccount {
+    account_id      String   @id @default(uuid())
+    user            User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+    user_id         String   @unique
+    account_balance Decimal  @default(0)
+    currency        String
+    created_at      DateTime @default(now())
+    updated_at      DateTime @updatedAt
+}
+
+model ForexExchangeRates {
+    id        String   @id @default(uuid())
+    expire_at DateTime
+
+    CurrencyExchangeRate CurrencyExchangeRate[]
+}
+
+model CurrencyExchangeRate {
+    id                 String   @id @default(uuid())
+    from_currency_code String
+    from_currency_name String
+    to_currency_code   String
+    to_currency_name   String
+    exchange_rate      Decimal
+    last_refreshed_at  DateTime
+    time_zone          String
+    bid_price          Decimal
+    ask_price          Decimal
+
+    created_at             DateTime           @default(now())
+    forex_exchange_rate    ForexExchangeRates @relation(fields: [forex_exchange_rate_id], references: [id])
+    forex_exchange_rate_id String
+}
+
+// All the date and time should be in UTC time zone  created and updated At
+// currency code should be from  enum 

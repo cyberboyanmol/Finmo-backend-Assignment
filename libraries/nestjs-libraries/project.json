@@ -1,0 +1,9 @@
+{
+  "name": "libraries-nestjs-libraries",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libraries/nestjs-libraries/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project libraries-nestjs-libraries --web",
+  "targets": {}
+}
