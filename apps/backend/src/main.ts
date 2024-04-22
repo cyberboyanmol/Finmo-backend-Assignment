@@ -10,7 +10,6 @@ async function bootstrap() {
   const globalPrefix = 'api/v1';
   app.use(helmet());
 
-  // console.log(configService);
   app.setGlobalPrefix(globalPrefix);
   app.enableCors({ origin: process.env.ALLOWED_ORIGINS, credentials: true });
   app.useGlobalPipes(
