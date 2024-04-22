@@ -44,4 +44,7 @@ export class ConfigService implements Config {
   get JWT_REFRESH_TOKEN_SECRET(): string {
     return this.configService.get<string>('JWT_REFRESH_TOKEN_SECRET');
   }
+  get ALPHA_VANTAGE_API_KEYS(): string {
+    return this.configService.get<string>('ALPHA_VANTAGE_API_KEYS');
+  }
 }
