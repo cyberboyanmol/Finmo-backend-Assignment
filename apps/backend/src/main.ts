@@ -1,8 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
+import { AppModule } from './app.module';
 import helmet from 'helmet';
-import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
 
 import { loadSwagger } from '@forexsystem/helpers/swagger/load.swagger';
 
@@ -13,7 +12,7 @@ async function bootstrap() {
 
   // console.log(configService);
   app.setGlobalPrefix(globalPrefix);
-  // app.enableCors({ origin: configService.ALLOWED_ORIGINS, credentials: true });
+  app.enableCors({ origin: process.env.ALLOWED_ORIGINS, credentials: true });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

@@ -19,8 +19,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@forexsystem/helpers/*": ["libraries/helpers/src/*"],
       "@forexsystem/backend/*": ["apps/backend/src/*"],
+      "@forexsystem/cron/*": ["apps/cron/src/*"],
+      "@forexsystem/helpers/*": ["libraries/helpers/src/*"],
       "@forexsystem/nestjs-libraries/*": ["libraries/nestjs-libraries/src/*"]
     }
   },
