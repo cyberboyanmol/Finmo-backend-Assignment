@@ -1,0 +1,3 @@
+export enum ForexEventPattern {
+  SYNC_FOREX_EXCHANGE_RATES = 'SYNC_FOREX_EXCHANGE_RATES',
+}

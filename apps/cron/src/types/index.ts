@@ -1,4 +1,4 @@
-export type buildForexExchangeRateUrlProps = {
+export type ForexExchangeRateUrlProps = {
   to_currency: string;
   apiKey: string;
 };

@@ -58,12 +58,12 @@ export class BullMqCoreModule {
     }
 
     throw new Error(
-      'Invalid BullMqModule async options: one of `useClass`, `useExisting` or `useFactory` should be defined.'
+      'Invalid BullMqModule async options: one of `useClass`, `useExisting` or `useFactory` should be defined.',
     );
   }
 
   private static createAsyncOptionsProvider(
-    options: IBullMqModuleOptionsAsync
+    options: IBullMqModuleOptionsAsync,
   ) {
     if (options.useFactory) {
       return {
