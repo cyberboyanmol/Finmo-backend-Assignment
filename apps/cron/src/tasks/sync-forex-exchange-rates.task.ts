@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import axios from 'axios';
+// import axios from 'axios';
 
-import {
-  CurrencyCode,
-  currencyCodesWithName,
-} from '@forexsystem/helpers/utils';
+// import {
+//   CurrencyCode,
+//   currencyCodesWithName,
+// } from '@forexsystem/helpers/utils';
 import { getForexExchangeRateUrl } from '../helpers/url-builder';
 import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
 import { ForexExchangeRateUrlProps } from '../types';
@@ -14,7 +14,7 @@ import {
   ForexEventPattern,
   SyncForexExchangeRateEvent,
 } from '@forexsystem/helpers/events';
-import { timeout } from 'rxjs';
+
 @Injectable()
 export class SyncForexExchangeRateService {
   constructor(

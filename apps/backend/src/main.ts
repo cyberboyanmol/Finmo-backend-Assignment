@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
@@ -14,6 +14,15 @@ async function bootstrap() {
   app.enableCors({ origin: process.env.ALLOWED_ORIGINS, credentials: true });
   app.useGlobalPipes(
     new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const result = errors.map((error) => {
+          return {
+            property: error.property,
+            message: error.constraints[Object.keys(error.constraints)[0]],
+          };
+        });
+        return new BadRequestException(result);
+      },
       transform: true,
       stopAtFirstError: true,
       forbidUnknownValues: false,

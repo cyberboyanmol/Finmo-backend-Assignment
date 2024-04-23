@@ -38,6 +38,9 @@ export class ConfigService implements Config {
       'JWT_REFRESH_TOKEN_COOKIE_EXPIRATION'
     );
   }
+  get JWT_ACESS_TOKEN_COOKIE_EXPIRATION(): number {
+    return this.configService.get<number>('JWT_ACESS_TOKEN_COOKIE_EXPIRATION');
+  }
   get JWT_ACCESS_TOKEN_SECRET(): string {
     return this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET');
   }
@@ -46,5 +49,8 @@ export class ConfigService implements Config {
   }
   get ALPHA_VANTAGE_API_KEYS(): string {
     return this.configService.get<string>('ALPHA_VANTAGE_API_KEYS');
+  }
+  get _BCRYPT_SECRET_PEPPER(): string {
+    return this.configService.get<string>('_BCRYPT_SECRET_PEPPER');
   }
 }

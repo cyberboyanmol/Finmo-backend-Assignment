@@ -16,11 +16,21 @@ model User {
     password          String
     first_name        String
     last_name         String?
-    is_email_verified Boolean
+    is_email_verified Boolean        @default(false)
     created_at        DateTime       @default(now())
     updated_at        DateTime       @updatedAt
     refresh_token     RefreshToken[]
-    user_account      UserAccount?
+    user_wallet       UserWallet?
+}
+
+model UserWallet {
+    account_id      String       @id @default(uuid())
+    user            User         @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+    user_id         String       @unique
+    account_balance Decimal      @default(0)
+    currency_code   CurrencyCode @default(USD)
+    created_at      DateTime     @default(now())
+    updated_at      DateTime     @updatedAt
 }
 
 model RefreshToken {
@@ -30,28 +40,20 @@ model RefreshToken {
     user_id          String
 }
 
-model UserAccount {
-    account_id      String   @id @default(uuid())
-    user            User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-    user_id         String   @unique
-    account_balance Decimal  @default(0)
-    currency        String
-    created_at      DateTime @default(now())
-    updated_at      DateTime @updatedAt
-}
-
 model ForexExchangeRates {
-    id        String   @id @default(uuid())
-    expire_at DateTime
-
-    CurrencyExchangeRate CurrencyExchangeRate[]
+    id                            String                 @id @default(uuid())
+    currency_exchange_rate        CurrencyExchangeRate[]
+    forex_exchange_rate_id        String                 @unique
+    forex_exchange_rate_expire_at DateTime
+    created_at                    DateTime               @default(now())
+    updated_at                    DateTime               @updatedAt
 }
 
 model CurrencyExchangeRate {
-    id                 String   @id @default(uuid())
-    from_currency_code String
+    id                 String       @id @default(uuid())
+    from_currency_code CurrencyCode
     from_currency_name String
-    to_currency_code   String
+    to_currency_code   CurrencyCode
     to_currency_name   String
     exchange_rate      Decimal
     last_refreshed_at  DateTime
@@ -62,6 +64,166 @@ model CurrencyExchangeRate {
     created_at             DateTime           @default(now())
     forex_exchange_rate    ForexExchangeRates @relation(fields: [forex_exchange_rate_id], references: [id])
     forex_exchange_rate_id String
+}
+
+enum CurrencyCode {
+    AED
+    AFN
+    ALL
+    AMD
+    ANG
+    AOA
+    ARS
+    AUD
+    AWG
+    AZN
+    BAM
+    BBD
+    BDT
+    BGN
+    BHD
+    BIF
+    BMD
+    BND
+    BOB
+    BRL
+    BSD
+    BTN
+    BWP
+    BZD
+    CAD
+    CDF
+    CHF
+    CLF
+    CLP
+    CNH
+    CNY
+    COP
+    CUP
+    CVE
+    CZK
+    DJF
+    DKK
+    DOP
+    DZD
+    EGP
+    ERN
+    ETB
+    EUR
+    FJD
+    FKP
+    GBP
+    GEL
+    GHS
+    GIP
+    GMD
+    GNF
+    GTQ
+    GYD
+    HKD
+    HNL
+    HRK
+    HTG
+    HUF
+    ICP
+    IDR
+    ILS
+    INR
+    IQD
+    IRR
+    ISK
+    JEP
+    JMD
+    JOD
+    JPY
+    KES
+    KGS
+    KHR
+    KMF
+    KPW
+    KRW
+    KWD
+    KYD
+    KZT
+    LAK
+    LBP
+    LKR
+    LRD
+    LSL
+    LYD
+    MAD
+    MDL
+    MGA
+    MKD
+    MMK
+    MNT
+    MOP
+    MRO
+    MRU
+    MUR
+    MVR
+    MWK
+    MXN
+    MYR
+    MZN
+    NAD
+    NGN
+    NOK
+    NPR
+    NZD
+    OMR
+    PAB
+    PEN
+    PGK
+    PHP
+    PKR
+    PLN
+    PYG
+    QAR
+    RON
+    RSD
+    RUB
+    RUR
+    RWF
+    SAR
+    SBD
+    SCR
+    SDG
+    SDR
+    SEK
+    SGD
+    SHP
+    SLL
+    SOS
+    SRD
+    SYP
+    SZL
+    THB
+    TJS
+    TMT
+    TND
+    TOP
+    TRY
+    TTD
+    TWD
+    TZS
+    UAH
+    UGX
+    USD
+    UYU
+    UZS
+    VND
+    VUV
+    WST
+    XAF
+    XCD
+    XDR
+    XOF
+    XPF
+    YER
+    ZAR
+    ZMW
+    ZWL
 }
 
 // All the date and time should be in UTC time zone  created and updated At

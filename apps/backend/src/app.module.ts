@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@forexsystem/nestjs-libraries/config/config.module';
+import { AuthModule } from './app/auth/auth.module';
+import { DatabaseModule } from '@forexsystem/nestjs-libraries/dal/prisma/database.module';
 @Module({
-  imports: [ConfigModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [DatabaseModule, ConfigModule, AuthModule],
+  controllers: [],
+  providers: [],
+  get exports() {
+    return [...this.imports];
+  },
 })
 export class AppModule {}
