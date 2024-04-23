@@ -10,10 +10,12 @@ import { getForexExchangeRateUrl } from '../helpers/url-builder';
 import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
 import { ForexExchangeRateUrlProps } from '../types';
 import { BullMqClient } from '@forexsystem/nestjs-libraries/bull-mq-transport/client';
+import { v4 as uuidV4 } from 'uuid';
 import {
   ForexEventPattern,
   SyncForexExchangeRateEvent,
 } from '@forexsystem/helpers/events';
+import { generateTimestamp } from '@forexsystem/helpers/utils';
 
 @Injectable()
 export class SyncForexExchangeRateService {
@@ -27,7 +29,12 @@ export class SyncForexExchangeRateService {
   async syncForexExchangeRatesEveryHour() {
     // THIS CRON WILL ONLY ADD THE USD TO INR FETCHING URL
     // DUE TO ALPHA VANTAGE API HARD RATE LIMIT (i.e 25 requests a day only)
-    const forexEchangeRatesId = 'nanoid';
+
+    const forex_exchange_rates_expires_at_milliseconds = 1000 * 30;
+    const forex_exchange_rates_id = uuidV4();
+    const forex_exchange_rates_expires_at = generateTimestamp(
+      forex_exchange_rates_expires_at_milliseconds
+    );
     const params: ForexExchangeRateUrlProps = {
       to_currency: 'INR',
       apiKey: this._configService.ALPHA_VANTAGE_API_KEYS,
@@ -37,10 +44,10 @@ export class SyncForexExchangeRateService {
 
     const eventData: SyncForexExchangeRateEvent['data'] = {
       url,
-      forexExchangeId: forexEchangeRatesId,
+      forex_exchange_rates_id,
+      forex_exchange_rates_expires_at,
     };
 
-    //  Added the url to the queue for processing currency exchange rate and saving to the db
     this._workerServiceProducer.emit(
       ForexEventPattern.SYNC_FOREX_EXCHANGE_RATES,
       { payload: { ...eventData } }

@@ -27,7 +27,7 @@ model UserWallet {
     account_id      String       @id @default(uuid())
     user            User         @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
     user_id         String       @unique
-    account_balance Decimal      @default(0)
+    account_balance Decimal      @default(0) @db.Decimal(1000, 8)
     currency_code   CurrencyCode @default(USD)
     created_at      DateTime     @default(now())
     updated_at      DateTime     @updatedAt
@@ -41,12 +41,12 @@ model RefreshToken {
 }
 
 model ForexExchangeRates {
-    id                            String                 @id @default(uuid())
-    currency_exchange_rate        CurrencyExchangeRate[]
-    forex_exchange_rate_id        String                 @unique
-    forex_exchange_rate_expire_at DateTime
-    created_at                    DateTime               @default(now())
-    updated_at                    DateTime               @updatedAt
+    id                              String                 @id @default(uuid())
+    currency_exchange_rate          CurrencyExchangeRate[]
+    forex_exchange_rates_id         String                 @unique
+    forex_exchange_rates_expires_at DateTime               @unique
+    created_at                      DateTime               @default(now())
+    updated_at                      DateTime               @updatedAt
 }
 
 model CurrencyExchangeRate {
@@ -55,11 +55,11 @@ model CurrencyExchangeRate {
     from_currency_name String
     to_currency_code   CurrencyCode
     to_currency_name   String
-    exchange_rate      Decimal
-    last_refreshed_at  DateTime
+    exchange_rate      Decimal      @db.Decimal(1000, 8)
+    last_refreshed_at  String
     time_zone          String
-    bid_price          Decimal
-    ask_price          Decimal
+    bid_price          Decimal      @db.Decimal(1000, 8)
+    ask_price          Decimal      @db.Decimal(1000, 8)
 
     created_at             DateTime           @default(now())
     forex_exchange_rate    ForexExchangeRates @relation(fields: [forex_exchange_rate_id], references: [id])
