@@ -27,7 +27,7 @@ model UserWallet {
     account_id      String       @id @default(uuid())
     user            User         @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
     user_id         String       @unique
-    account_balance Decimal      @default(0) @db.Decimal(1000, 8)
+    account_balance Decimal      @default(0) @db.Decimal(999, 8)
     currency_code   CurrencyCode @default(USD)
     created_at      DateTime     @default(now())
     updated_at      DateTime     @updatedAt
@@ -55,14 +55,14 @@ model CurrencyExchangeRate {
     from_currency_name String
     to_currency_code   CurrencyCode
     to_currency_name   String
-    exchange_rate      Decimal      @db.Decimal(1000, 8)
+    exchange_rate      Decimal      @db.Decimal(999, 8)
     last_refreshed_at  String
     time_zone          String
-    bid_price          Decimal      @db.Decimal(1000, 8)
-    ask_price          Decimal      @db.Decimal(1000, 8)
+    bid_price          Decimal      @db.Decimal(999, 8)
+    ask_price          Decimal      @db.Decimal(999, 8)
 
     created_at             DateTime           @default(now())
-    forex_exchange_rate    ForexExchangeRates @relation(fields: [forex_exchange_rate_id], references: [id])
+    forex_exchange_rate    ForexExchangeRates @relation(fields: [forex_exchange_rate_id], references: [forex_exchange_rates_id])
     forex_exchange_rate_id String
 }
 

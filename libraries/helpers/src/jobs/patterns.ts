@@ -1,3 +1,3 @@
-export enum ForexEventPattern {
+export enum ForexJobPattern {
   SYNC_FOREX_EXCHANGE_RATES = 'SYNC_FOREX_EXCHANGE_RATES',
 }
