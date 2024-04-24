@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ForexExchangeRatesRepository } from './forex-exchange-rates.repository';
-import { RealtimeCurrencyExchangeRate } from '@forexsystem/helpers/interfaces';
+import {
+  ForexExchangeRatesData,
+  RealtimeCurrencyExchangeRate,
+} from '@forexsystem/helpers/interfaces';
 
 @Injectable()
 export class ForexExchangeRatesService {
@@ -8,20 +11,22 @@ export class ForexExchangeRatesService {
     private _forexExchangeRatesRepository: ForexExchangeRatesRepository
   ) {}
 
-  async createForexExchangeRates(data: {
-    forex_exchange_rates_id: string;
-    forex_exchange_rates_expires_at: string;
-  }) {
+  async createForexExchangeRates(
+    data: Pick<
+      ForexExchangeRatesData,
+      'forex_exchange_rates_id' | 'forex_exchange_rates_expires_at'
+    >
+  ) {
     return this._forexExchangeRatesRepository.createForexExchangeRates(data);
   }
 
-  async createCurrencyExchangeRate(
-    data: RealtimeCurrencyExchangeRate & { forex_exchange_rates_id: string }
-  ) {
+  async createCurrencyExchangeRate(data: ForexExchangeRatesData) {
     return this._forexExchangeRatesRepository.createCurrencyExchangeRate(data);
   }
 
-  async getForexExchangeRatesById(data: { forex_exchange_rates_id: string }) {
+  async getForexExchangeRatesById(
+    data: Pick<ForexExchangeRatesData, 'forex_exchange_rates_id'>
+  ) {
     return this._forexExchangeRatesRepository.getForexExchangeRatesById(data);
   }
 }

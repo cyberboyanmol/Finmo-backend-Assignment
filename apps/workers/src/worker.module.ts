@@ -8,6 +8,7 @@ import { SaveForexExchangeRateToRedisService } from './services/save-forex-excha
 import { SyncForexExchangeRateProcessor } from './processors/sync-forex-exchange-rate.processor';
 import { FOREX_EXCHANGE_RATES } from '@forexsystem/nestjs-libraries/bull-mq-queue/queues';
 import { QueueModule } from '@forexsystem/nestjs-libraries/bull-mq-queue/bull-mq-queue.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [

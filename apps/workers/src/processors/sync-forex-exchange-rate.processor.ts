@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { Job } from 'bullmq';
+import { Job, Queue } from 'bullmq';
 import { Processor } from '@nestjs/bullmq';
 import { FOREX_EXCHANGE_RATES } from '@forexsystem/nestjs-libraries/bull-mq-queue/queues';
 import {
@@ -11,12 +11,15 @@ import { FetchForexExchangeRateService } from '../services/fetch-forex-exchange-
 import { SaveForexExchangeRateToDatabaseService } from '../services/save-forex-exchange-rate-to-database.service';
 import { SaveForexExchangeRateToRedisService } from '../services/save-forex-exchange-rate-to-redis.service';
 import { RealtimeCurrencyExchangeRate } from '@forexsystem/helpers/interfaces';
+import { InjectForexExchangeRatesQueue } from '@forexsystem/nestjs-libraries/bull-mq-queue/decorators/inject-queue.decorator';
 
+let QUEUE_DRAINED_EVENT_FLG = 0;
 @Processor(FOREX_EXCHANGE_RATES, { concurrency: 100, useWorkerThreads: true })
 @Injectable()
 export class SyncForexExchangeRateProcessor extends WorkerHost {
   private readonly logger = new Logger(SyncForexExchangeRateProcessor.name);
   constructor(
+    @InjectForexExchangeRatesQueue() private _forexExchangeRatesQueue: Queue,
     private readonly _fetchForexExchangeRateService: FetchForexExchangeRateService,
     private readonly _saveForexExchangeRateToDatabaseService: SaveForexExchangeRateToDatabaseService,
     private readonly _saveForexExchangeRateToRedisService: SaveForexExchangeRateToRedisService
@@ -68,13 +71,23 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
   }
 
   @OnWorkerEvent('completed')
-  onCompleted(job: Job) {
+  async onCompleted(job: Job) {
     const { id, name, queueName, finishedOn, returnvalue } = job;
     const completionTime = finishedOn ? new Date(finishedOn).toISOString() : '';
 
     this.logger.log(
       `Job id: ${id}, name: ${name} completed in queue ${queueName} on ${completionTime}. Result: ${returnvalue}`
     );
+
+    const activeJobsCount =
+      await this._forexExchangeRatesQueue.getActiveCount();
+    const waitingJobsCount =
+      await this._forexExchangeRatesQueue.getWaitingCount();
+    if (activeJobsCount === 0 && waitingJobsCount === 0) {
+      console.log(
+        'All jobs have been completed, executing afterAllJobsCompleted logic'
+      );
+    }
   }
 
   @OnWorkerEvent('progress')

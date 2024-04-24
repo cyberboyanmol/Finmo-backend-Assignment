@@ -1,8 +1,4 @@
-import {
-  ConfigurableModuleBuilder,
-  DynamicModule,
-  Module,
-} from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 
 import { BullModule } from '@nestjs/bullmq';
 import {
