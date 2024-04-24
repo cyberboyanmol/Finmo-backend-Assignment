@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Job, Queue } from 'bullmq';
 import { Processor } from '@nestjs/bullmq';
 import { FOREX_EXCHANGE_RATES } from '@forexsystem/nestjs-libraries/bull-mq-queue/queues';
@@ -10,11 +10,10 @@ import { OnWorkerEvent, WorkerHost } from '@nestjs/bullmq';
 import { FetchForexExchangeRateService } from '../services/fetch-forex-exchange-rate.service';
 import { SaveForexExchangeRateToDatabaseService } from '../services/save-forex-exchange-rate-to-database.service';
 import { SaveForexExchangeRateToRedisService } from '../services/save-forex-exchange-rate-to-redis.service';
-import { RealtimeCurrencyExchangeRate } from '@forexsystem/helpers/interfaces';
+import { ForexExchangeRatesData } from '@forexsystem/helpers/interfaces';
 import { InjectForexExchangeRatesQueue } from '@forexsystem/nestjs-libraries/bull-mq-queue/decorators/inject-queue.decorator';
 
-let QUEUE_DRAINED_EVENT_FLG = 0;
-@Processor(FOREX_EXCHANGE_RATES, { concurrency: 100, useWorkerThreads: true })
+@Processor(FOREX_EXCHANGE_RATES, { concurrency: 50, useWorkerThreads: true })
 @Injectable()
 export class SyncForexExchangeRateProcessor extends WorkerHost {
   private readonly logger = new Logger(SyncForexExchangeRateProcessor.name);
@@ -48,26 +47,27 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
   }
 
   async syncForexExchangeRates(job: Job<SyncForexExchangeRateJob['data']>) {
+    // fetching the live conversion rates from alphavantage.co
     const forexExchangeRate =
       await this._fetchForexExchangeRateService.fetchForexConversionRate();
 
-    const data = {
-      ...forexExchangeRate,
-      forex_exchange_rates_expires_at: job.data.forex_exchange_rates_expires_at,
+    const data: ForexExchangeRatesData = {
       forex_exchange_rates_id: job.data.forex_exchange_rates_id,
-    } as RealtimeCurrencyExchangeRate & {
-      forex_exchange_rates_id: string;
-      forex_exchange_rates_expires_at: string;
+      forex_exchange_rates_expires_at: job.data.forex_exchange_rates_expires_at,
+      currency_exchange_rates: forexExchangeRate,
     };
 
+    // saving the conversion rates into the postgres database (for future reference)
     const updated_forex_exchange_rates =
       await this._saveForexExchangeRateToDatabaseService.saveForexExchangeRateToDatabase(
         data
       );
-    console.log(updated_forex_exchange_rates);
-    this.logger.log(
-      `Successfully saved forex exchange rates in database with forex_exchange_rates_id: ${job.data.forex_exchange_rates_id}, jobid: ${job.id}`
+
+    // saving the conversion rates into the InMemory (i.e redis database)
+    await this._saveForexExchangeRateToRedisService.saveForexExchangeRateToRedis(
+      data
     );
+    console.log(updated_forex_exchange_rates);
   }
 
   @OnWorkerEvent('completed')
@@ -84,6 +84,8 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
     const waitingJobsCount =
       await this._forexExchangeRatesQueue.getWaitingCount();
     if (activeJobsCount === 0 && waitingJobsCount === 0) {
+      // ✅ TODO:
+      //  Impelement on redis key changing from FOREX_EXCHANGE_RATES:${RANDOM_STRING (i.e uuid)} to FOREX_EXCHANGE_RATES:LASTEST key
       console.log(
         'All jobs have been completed, executing afterAllJobsCompleted logic'
       );

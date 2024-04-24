@@ -2,12 +2,13 @@ import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
 import { RedisRepositoryInterface } from './interfaces/redis.repository.interface';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 
 @Injectable()
 export class RedisRepository
   implements OnModuleDestroy, RedisRepositoryInterface
 {
-  constructor(@Inject('RedisClient') private readonly redisClient: Redis) {}
+  constructor(@InjectRedis() private readonly redisClient: Redis) {}
 
   onModuleDestroy(): void {
     this.redisClient.disconnect();

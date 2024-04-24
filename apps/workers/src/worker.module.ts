@@ -2,17 +2,18 @@ import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { BullModule as BullMqModule } from '@nestjs/bullmq';
 import { DatabaseModule } from '@forexsystem/nestjs-libraries/dal/prisma/database.module';
+import { RedisModule } from '@forexsystem/nestjs-libraries/dal/redis/redis.module';
 import { FetchForexExchangeRateService } from './services/fetch-forex-exchange-rate.service';
 import { SaveForexExchangeRateToDatabaseService } from './services/save-forex-exchange-rate-to-database.service';
 import { SaveForexExchangeRateToRedisService } from './services/save-forex-exchange-rate-to-redis.service';
 import { SyncForexExchangeRateProcessor } from './processors/sync-forex-exchange-rate.processor';
 import { FOREX_EXCHANGE_RATES } from '@forexsystem/nestjs-libraries/bull-mq-queue/queues';
 import { QueueModule } from '@forexsystem/nestjs-libraries/bull-mq-queue/bull-mq-queue.module';
-import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
     DatabaseModule,
+    RedisModule,
     HttpModule.registerAsync({
       useFactory: () => ({
         timeout: 5000,
@@ -38,6 +39,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 
   controllers: [],
   providers: [
+    
     SyncForexExchangeRateProcessor,
     FetchForexExchangeRateService,
     SaveForexExchangeRateToDatabaseService,

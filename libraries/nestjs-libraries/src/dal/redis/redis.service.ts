@@ -13,7 +13,7 @@ const tenMinutesInSeconds = 60 * 10;
 export class RedisService {
   constructor(private readonly _redisRepository: RedisRepository) {}
 
-  async setForexExchangeRateToRedis(
+  async setForexExchangeRate(
     key: string,
     data: ForexExchangeRatesRedisData,
     expiry_ttl: number
@@ -26,7 +26,7 @@ export class RedisService {
     );
   }
 
-  async getForexExchangeRateFromRedis(
+  async getForexExchangeRate(
     key: string
   ): Promise<ForexExchangeRatesRedisData | null> {
     const forexExchangeRatesData = await this._redisRepository.get(
@@ -38,5 +38,12 @@ export class RedisService {
     }
 
     return JSON.parse(forexExchangeRatesData);
+  }
+
+  async deleteForexExchangeRateById(key: string) {
+    return await this._redisRepository.delete(
+      RedisPrefixEnum.FOREX_EXCHANGE_RATES,
+      key
+    );
   }
 }
