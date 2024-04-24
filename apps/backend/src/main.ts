@@ -2,14 +2,14 @@ import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
-
+import cookieParser from 'cookie-parser';
 import { loadSwagger } from '@forexsystem/helpers/swagger/load.swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api/v1';
   app.use(helmet());
-
+  app.use(cookieParser());
   app.setGlobalPrefix(globalPrefix);
   app.enableCors({ origin: process.env.ALLOWED_ORIGINS, credentials: true });
   app.useGlobalPipes(
