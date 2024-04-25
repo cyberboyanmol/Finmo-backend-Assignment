@@ -24,9 +24,7 @@ export class SyncForexExchangeRateService {
     @InjectForexExchangeRatesQueue() private _forexExchangeRatesQueue: Queue
   ) {}
 
-  // @Cron(CronExpression.EVERY_HOUR)
-
-  @Cron('*/10 * * * * *')
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncForexExchangeRatesEveryHour() {
     // THIS CRON WILL ONLY ADD THE USD TO INR FETCHING URL
     // DUE TO ALPHA VANTAGE API HARD RATE LIMIT (i.e 25 requests a day only)
@@ -56,7 +54,7 @@ export class SyncForexExchangeRateService {
     );
   }
 
-  // @Cron('*/30 * * * * *')
+  // @Cron(CronExpression.EVERY_30_SECONDS)
   // async syncForexRatesEvery30Seconds() {
   //   const forex_exchange_rates_expires_at_milliseconds = 1000 * 30;
   //   const forex_exchange_rates_id = uuidV4();
@@ -81,7 +79,6 @@ export class SyncForexExchangeRateService {
   //       ForexJobPattern.SYNC_FOREX_EXCHANGE_RATES,
   //       { ...eventData }
   //     );
-
   //   });
   // }
 }

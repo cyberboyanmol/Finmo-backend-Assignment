@@ -1,6 +1,6 @@
 import { CurrencyCode, CurrencyExchangeRate } from '@prisma/client';
 import { BASE_CURRENCY } from '../interfaces/currency-exchange-rate.interface';
-
+import { Decimal } from '@prisma/client/runtime/library';
 export class CurrencyConverterService {
   /**
    * The function `convertToBaseCurrency` converts an amount from a given currency to the base currency
@@ -72,5 +72,11 @@ export class CurrencyConverterService {
     });
 
     return amountInTargetCurrency;
+  }
+
+  static sumBalances(data: { prevBalance: Decimal; amount: number }) {
+    const { prevBalance, amount } = data;
+    const sum = prevBalance.add(new Decimal(amount));
+    return sum;
   }
 }

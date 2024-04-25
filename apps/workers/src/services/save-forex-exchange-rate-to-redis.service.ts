@@ -6,8 +6,9 @@ import {
 } from '@forexsystem/helpers/interfaces';
 import { CurrencyCode } from '@prisma/client';
 
-const FOREX_EXCHANGE_RATES_TTL = 120;
-const FOREX_EXCHANGE_RATES_LASTEST_TTL = 30;
+// CRON JOB WILL UPDATE THE SAME KEY IN EVERY 30 SECONDS
+const FOREX_EXCHANGE_RATES_TTL = 60;
+const FOREX_EXCHANGE_RATES_LASTEST_TTL = 60;
 
 @Injectable()
 export class SaveForexExchangeRateToRedisService {
@@ -27,7 +28,7 @@ export class SaveForexExchangeRateToRedisService {
       };
 
       await this._redisSerivce.setForexExchangeRateWithExpiry(
-        `${data.forex_exchange_rates_id}:${data.currency_exchange_rates.from_currency_code}:${data.currency_exchange_rates.to_currency_code}`,
+        `${data.currency_exchange_rates.from_currency_code}:${data.currency_exchange_rates.to_currency_code}`,
         forexExchangeRate,
         FOREX_EXCHANGE_RATES_TTL
       );
@@ -80,7 +81,7 @@ export class SaveForexExchangeRateToRedisService {
   ) {
     try {
       return await this._redisSerivce.getForexExchangeRate(
-        `${forex_exchange_rates_id}:${from_currency_code}:${to_currency_code}`
+        `${from_currency_code}:${to_currency_code}`
       );
     } catch (e) {
       this.logger.error('Error in saving forex exchange rates in redis:', e);

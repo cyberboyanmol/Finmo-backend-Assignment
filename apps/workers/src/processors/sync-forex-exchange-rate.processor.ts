@@ -73,6 +73,7 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
     await this._saveForexExchangeRateToRedisService.saveForexExchangeRateToRedis(
       data
     );
+
     console.log(updated_forex_exchange_rates);
   }
 

@@ -4,7 +4,6 @@ import {
   IsOptional,
   IsString,
   MinLength,
-  //   ValidateIf,
 } from 'class-validator';
 
 export class CreateUserDto {

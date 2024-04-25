@@ -27,7 +27,7 @@ model UserWallet {
     account_id      String       @id @default(uuid())
     user            User         @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
     user_id         String       @unique
-    account_balance Decimal      @default(0) @db.Decimal(999, 8)
+    account_balance Decimal      @default(0)
     currency_code   CurrencyCode @default(USD)
     created_at      DateTime     @default(now())
     updated_at      DateTime     @updatedAt
@@ -42,7 +42,7 @@ model RefreshToken {
 
 model ForexExchangeRates {
     id                              String                 @id @default(uuid())
-    currency_exchange_rate          CurrencyExchangeRate[]
+    currency_exchange_rates         CurrencyExchangeRate[]
     forex_exchange_rates_id         String                 @unique
     forex_exchange_rates_expires_at DateTime               @unique
     created_at                      DateTime               @default(now())

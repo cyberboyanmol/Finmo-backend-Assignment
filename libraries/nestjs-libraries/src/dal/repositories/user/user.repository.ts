@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '../../prisma/prisma.service';
-import { CreateUserDto } from '@forexsystem/nestjs-libraries/dtos/auth/create-user.dto';
+import { CreateUserDto } from '../../../dtos/auth/create-user.dto';
 
 @Injectable()
 export class UserRepository {

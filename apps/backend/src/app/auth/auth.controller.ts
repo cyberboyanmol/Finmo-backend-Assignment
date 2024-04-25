@@ -5,6 +5,8 @@ import { CreateUserDto } from '@forexsystem/nestjs-libraries/dtos/auth/create-us
 import { AuthService } from './auth.service';
 import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
 
+
+// ✅ TODO: Serialize the 
 @Controller('auth')
 export class AuthController {
   constructor(
