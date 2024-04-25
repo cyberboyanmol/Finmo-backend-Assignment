@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaRepository } from '../../prisma/prisma.service';
+import { UserWallet } from '@prisma/client';
 
 @Injectable()
-export class UserWalletRepository {
+export class WalletRepository {
   constructor(private _walletAccount: PrismaRepository<'userWallet'>) {}
-  async getUserWalletBalance(user_id: string) {
+  async getUserWalletBalance(data: Pick<UserWallet, 'user_id'>) {
     return this._walletAccount.model.userWallet.findUnique({
       where: {
-        user_id,
+        user_id: data.user_id,
       },
       select: {
         user_id: true,
@@ -23,16 +24,15 @@ export class UserWalletRepository {
     });
   }
 
-  async addBalancetoUserWallet(data: {
-    user_id: string;
-    total_amount: number;
-  }) {
+  async addBalancetoUserWallet(
+    data: Pick<UserWallet, 'user_id' | 'account_balance'>
+  ) {
     return this._walletAccount.model.userWallet.update({
       where: {
         user_id: data.user_id,
       },
       data: {
-        account_balance: data.total_amount,
+        account_balance: data.account_balance,
       },
     });
   }

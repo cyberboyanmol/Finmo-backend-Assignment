@@ -5,6 +5,7 @@ import { UserService } from '../repositories/user/user.service';
 import { ForexExchangeRatesRepository } from '../repositories/forex-exchange-rates/forex-exchange-rates.repository';
 import { ForexExchangeRatesService } from '../repositories/forex-exchange-rates/forex-exchange-rates.service';
 import { RedisModule } from '../redis/redis.module';
+import { UserWalletRepository } from '../repositories/wallet/wallet.repository';
 
 @Global()
 @Module({
@@ -17,6 +18,7 @@ import { RedisModule } from '../redis/redis.module';
     UserService,
     ForexExchangeRatesRepository,
     ForexExchangeRatesService,
+    UserWalletRepository,
   ],
   get exports() {
     return this.providers;

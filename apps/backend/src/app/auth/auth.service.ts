@@ -3,6 +3,7 @@ import { UserService } from '@forexsystem/nestjs-libraries/dal/repositories/user
 import { CreateUserDto } from '@forexsystem/nestjs-libraries/dtos/auth/create-user.dto';
 import { CryptoService } from '@forexsystem/helpers/auth/crypto.service';
 import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
+
 @Injectable()
 export class AuthService {
   constructor(
