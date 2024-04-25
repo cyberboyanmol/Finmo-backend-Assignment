@@ -75,7 +75,6 @@ export class SaveForexExchangeRateToRedisService {
   }
 
   async getForexExchangeRate(
-    forex_exchange_rates_id: string,
     from_currency_code: CurrencyCode,
     to_currency_code: CurrencyCode
   ) {

@@ -35,7 +35,7 @@ export class SyncForexExchangeRateService {
       forex_exchange_rates_expires_at_milliseconds
     );
     const params: ForexExchangeRateUrlProps = {
-      to_currency: 'INR',
+      to_currency: 'JPY',
       apiKey: this._configService.ALPHA_VANTAGE_API_KEYS,
     };
 

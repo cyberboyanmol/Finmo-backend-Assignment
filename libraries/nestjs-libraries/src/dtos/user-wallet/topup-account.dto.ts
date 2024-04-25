@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsPositive,
   IsString,
 } from 'class-validator';
 
@@ -15,5 +16,6 @@ export class TopupAccountDto {
 
   @IsNumber()
   @IsNotEmpty()
+  @IsPositive({ message: 'Amount must be greater than zero.' })
   readonly amount: number;
 }

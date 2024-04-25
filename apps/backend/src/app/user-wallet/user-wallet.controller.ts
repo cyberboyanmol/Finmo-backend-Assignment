@@ -23,9 +23,10 @@ export class UserWalletController {
   }
 
   @Get('balance')
-  async getUserWalletBalance() {
+  async getUserBalance() {
     try {
-      return { balances: { USD: 1000, EUR: 500, GBP: 300 } };
+      const res = await this._userWalletService.getUserWalletBalance();
+      return res;
     } catch (e) {
       return e.message;
     }

@@ -55,7 +55,9 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
   async syncForexExchangeRates(job: Job<SyncForexExchangeRateJob['data']>) {
     // fetching the live conversion rates from alphavantage.co
     const forexExchangeRate =
-      await this._fetchForexExchangeRateService.fetchForexConversionRate();
+      await this._fetchForexExchangeRateService.fetchForexConversionRate(
+        job.data.url
+      );
 
     const data: ForexExchangeRatesData = {
       forex_exchange_rates_id: job.data.forex_exchange_rates_id,
@@ -102,7 +104,6 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
       const promises = currencyCodesWithName.map(async (currency, index) => {
         const currency_exchange_rate_data =
           (await this._saveForexExchangeRateToRedisService.getForexExchangeRate(
-            job.data.forex_exchange_rates_id,
             BASE_CURRENCY,
             currency.code
           )) as ForexExchangeRatesRedisData | null;

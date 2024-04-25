@@ -13,9 +13,7 @@ export class FetchForexExchangeRateService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  async fetchForexConversionRate(): Promise<CurrencyExchangeRate> {
-    const url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=JPY&apikey=demo`;
-
+  async fetchForexConversionRate(url: string): Promise<CurrencyExchangeRate> {
     try {
       const response: AxiosResponse<CurrencyExchangeRateResponse> =
         await this.httpService.axiosRef.get(url);
