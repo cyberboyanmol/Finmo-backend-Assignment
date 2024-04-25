@@ -39,7 +39,6 @@ import { QueueModule } from '@forexsystem/nestjs-libraries/bull-mq-queue/bull-mq
 
   controllers: [],
   providers: [
-    
     SyncForexExchangeRateProcessor,
     FetchForexExchangeRateService,
     SaveForexExchangeRateToDatabaseService,

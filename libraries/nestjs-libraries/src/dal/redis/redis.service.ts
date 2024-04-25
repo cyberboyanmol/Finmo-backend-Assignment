@@ -1,19 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisRepository } from './redis.repository';
 import { RedisPrefixEnum } from './enum/redis-prefix.enum';
-import {
-  ForexExchangeRatesRedisData,
-  RealtimeCurrencyExchangeRate,
-} from '@forexsystem/helpers/interfaces';
-
-const oneDayInSeconds = 60 * 60 * 24;
-const tenMinutesInSeconds = 60 * 10;
+import { ForexExchangeRatesRedisData } from '@forexsystem/helpers/interfaces';
 
 @Injectable()
 export class RedisService {
   constructor(private readonly _redisRepository: RedisRepository) {}
 
-  async setForexExchangeRate(
+  async setForexExchangeRateWithExpiry(
     key: string,
     data: ForexExchangeRatesRedisData,
     expiry_ttl: number
@@ -36,7 +30,6 @@ export class RedisService {
     if (!forexExchangeRatesData) {
       return null;
     }
-
     return JSON.parse(forexExchangeRatesData);
   }
 

@@ -10,9 +10,14 @@ import { OnWorkerEvent, WorkerHost } from '@nestjs/bullmq';
 import { FetchForexExchangeRateService } from '../services/fetch-forex-exchange-rate.service';
 import { SaveForexExchangeRateToDatabaseService } from '../services/save-forex-exchange-rate-to-database.service';
 import { SaveForexExchangeRateToRedisService } from '../services/save-forex-exchange-rate-to-redis.service';
-import { ForexExchangeRatesData } from '@forexsystem/helpers/interfaces';
+import {
+  CurrencyExchangeRate,
+  ForexExchangeRatesData,
+  ForexExchangeRatesRedisData,
+} from '@forexsystem/helpers/interfaces';
 import { InjectForexExchangeRatesQueue } from '@forexsystem/nestjs-libraries/bull-mq-queue/decorators/inject-queue.decorator';
-
+import { currencyCodesWithName } from '@forexsystem/helpers/utils/currency-code';
+import { ForexExchangeRatesLastestRedisKey } from '@forexsystem/helpers/utils/constants';
 @Processor(FOREX_EXCHANGE_RATES, { concurrency: 50, useWorkerThreads: true })
 @Injectable()
 export class SyncForexExchangeRateProcessor extends WorkerHost {
@@ -71,7 +76,7 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
   }
 
   @OnWorkerEvent('completed')
-  async onCompleted(job: Job) {
+  async onCompleted(job: Job<SyncForexExchangeRateJob['data']>) {
     const { id, name, queueName, finishedOn, returnvalue } = job;
     const completionTime = finishedOn ? new Date(finishedOn).toISOString() : '';
 
@@ -84,11 +89,47 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
     const waitingJobsCount =
       await this._forexExchangeRatesQueue.getWaitingCount();
     if (activeJobsCount === 0 && waitingJobsCount === 0) {
-      // ✅ TODO:
       //  Impelement on redis key changing from FOREX_EXCHANGE_RATES:${RANDOM_STRING (i.e uuid)} to FOREX_EXCHANGE_RATES:LASTEST key
-      console.log(
-        'All jobs have been completed, executing afterAllJobsCompleted logic'
+
+      // const data: ForexExchangeRatesRedisData = {
+      //   forex_exchange_rates_id: job.data.forex_exchange_rates_id,
+      //   forex_exchange_rates_expires_at:
+      //     job.data.forex_exchange_rates_expires_at,
+      // };
+
+      const promises = currencyCodesWithName.map(async (currency, index) => {
+        const currency_exchange_rate_data =
+          (await this._saveForexExchangeRateToRedisService.getForexExchangeRate(
+            job.data.forex_exchange_rates_id,
+            'USD',
+            currency.code
+          )) as ForexExchangeRatesRedisData | null;
+
+        if (
+          currency_exchange_rate_data &&
+          currency_exchange_rate_data.currency_exchange_rates.length > 0
+        ) {
+          return currency_exchange_rate_data.currency_exchange_rates;
+        }
+        return [];
+      });
+
+      const resolvedPromises = await Promise.all(promises);
+      const currency_exchange_rates: CurrencyExchangeRate[] =
+        resolvedPromises.flat();
+
+      // saving the currency_exchange_rates to redis under the FOREX_EXCHANGE_RATES:lastest
+      await this._saveForexExchangeRateToRedisService.setForexExchangeRateAsLastest(
+        ForexExchangeRatesLastestRedisKey,
+        {
+          forex_exchange_rates_id: job.data.forex_exchange_rates_id,
+          forex_exchange_rates_expires_at:
+            job.data.forex_exchange_rates_expires_at,
+          currency_exchange_rates,
+        }
       );
+
+      this.logger.debug(`Saving the currency exchange rates in the Inmemory  `);
     }
   }
 

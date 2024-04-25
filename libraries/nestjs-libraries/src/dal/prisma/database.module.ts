@@ -4,10 +4,11 @@ import { UserRepository } from '../repositories/user/user.repository';
 import { UserService } from '../repositories/user/user.service';
 import { ForexExchangeRatesRepository } from '../repositories/forex-exchange-rates/forex-exchange-rates.repository';
 import { ForexExchangeRatesService } from '../repositories/forex-exchange-rates/forex-exchange-rates.service';
+import { RedisModule } from '../redis/redis.module';
 
 @Global()
 @Module({
-  imports: [],
+  imports: [RedisModule],
   controllers: [],
   providers: [
     PrismaRepository,

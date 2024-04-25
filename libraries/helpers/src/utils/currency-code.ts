@@ -1,9 +1,11 @@
-export interface CurrencyCode {
-  code: string;
+import { CurrencyCode } from '@prisma/client';
+
+export interface CurrencyCodeInterface {
+  code: CurrencyCode;
   name: string;
 }
 
-export const currencyCodesWithName: CurrencyCode[] = [
+export const currencyCodesWithName: CurrencyCodeInterface[] = [
   { code: 'AED', name: 'United Arab Emirates Dirham' },
   { code: 'AFN', name: 'Afghan Afghani' },
   { code: 'ALL', name: 'Albanian Lek' },

@@ -4,6 +4,8 @@ export interface CurrencyExchangeRateResponse {
   'Realtime Currency Exchange Rate': RealtimeCurrencyExchangeRate;
 }
 
+export const BASE_CURRENCY = 'USD';
+
 export interface CurrencyExchangeRate {
   from_currency_code: CurrencyCode;
   from_currency_name: string;
@@ -40,3 +42,5 @@ export interface ForexExchangeRatesRedisData {
   forex_exchange_rates_expires_at: string;
   currency_exchange_rates: CurrencyExchangeRate[];
 }
+
+
