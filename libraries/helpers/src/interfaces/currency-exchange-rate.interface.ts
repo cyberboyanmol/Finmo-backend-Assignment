@@ -42,5 +42,3 @@ export interface ForexExchangeRatesRedisData {
   forex_exchange_rates_expires_at: string;
   currency_exchange_rates: CurrencyExchangeRate[];
 }
-
-
