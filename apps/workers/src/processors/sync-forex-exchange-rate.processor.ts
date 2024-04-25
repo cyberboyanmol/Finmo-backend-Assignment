@@ -11,6 +11,7 @@ import { FetchForexExchangeRateService } from '../services/fetch-forex-exchange-
 import { SaveForexExchangeRateToDatabaseService } from '../services/save-forex-exchange-rate-to-database.service';
 import { SaveForexExchangeRateToRedisService } from '../services/save-forex-exchange-rate-to-redis.service';
 import {
+  BASE_CURRENCY,
   CurrencyExchangeRate,
   ForexExchangeRatesData,
   ForexExchangeRatesRedisData,
@@ -101,7 +102,7 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
         const currency_exchange_rate_data =
           (await this._saveForexExchangeRateToRedisService.getForexExchangeRate(
             job.data.forex_exchange_rates_id,
-            'USD',
+            BASE_CURRENCY,
             currency.code
           )) as ForexExchangeRatesRedisData | null;
 
