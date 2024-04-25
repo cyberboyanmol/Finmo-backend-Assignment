@@ -1,5 +1,11 @@
 import { CurrencyCode } from '@prisma/client';
-import { IsDecimal, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDecimal,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 export class TopupAccountDto {
   @IsString()
@@ -7,7 +13,7 @@ export class TopupAccountDto {
   @IsNotEmpty()
   readonly currency: CurrencyCode;
 
-  @IsDecimal()
+  @IsNumber()
   @IsNotEmpty()
   readonly amount: number;
 }
