@@ -48,6 +48,7 @@ export class SyncForexExchangeRateService {
     };
 
     console.log('Adding jobs to queue :', forex_exchange_rates_id);
+
     this._forexExchangeRatesQueue.add(
       ForexJobPattern.SYNC_FOREX_EXCHANGE_RATES,
       { ...eventData }

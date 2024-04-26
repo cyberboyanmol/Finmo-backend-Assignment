@@ -19,6 +19,7 @@ import {
 import { InjectForexExchangeRatesQueue } from '@forexsystem/nestjs-libraries/bull-mq-queue/decorators/inject-queue.decorator';
 import { currencyCodesWithName } from '@forexsystem/helpers/utils/currency-code';
 import { ForexExchangeRatesLastestRedisKey } from '@forexsystem/helpers/utils/constants';
+
 @Processor(FOREX_EXCHANGE_RATES, { concurrency: 50, useWorkerThreads: true })
 @Injectable()
 export class SyncForexExchangeRateProcessor extends WorkerHost {

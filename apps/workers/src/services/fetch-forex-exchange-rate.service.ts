@@ -6,6 +6,7 @@ import {
   CurrencyExchangeRateResponse,
   RealtimeCurrencyExchangeRate,
 } from '@forexsystem/helpers/interfaces/currency-exchange-rate.interface';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class FetchForexExchangeRateService {
@@ -27,13 +28,13 @@ export class FetchForexExchangeRateService {
           realtimeCurrencyExchangeRate['2. From_Currency Name'],
         to_currency_code: realtimeCurrencyExchangeRate['3. To_Currency Code'],
         to_currency_name: realtimeCurrencyExchangeRate['4. To_Currency Name'],
-        exchange_rate: parseFloat(
+        exchange_rate: new Decimal(
           realtimeCurrencyExchangeRate['5. Exchange Rate']
         ),
         last_refreshed_at: realtimeCurrencyExchangeRate['6. Last Refreshed'],
         time_zone: realtimeCurrencyExchangeRate['7. Time Zone'],
-        bid_price: parseFloat(realtimeCurrencyExchangeRate['8. Bid Price']),
-        ask_price: parseFloat(realtimeCurrencyExchangeRate['9. Ask Price']),
+        bid_price: new Decimal(realtimeCurrencyExchangeRate['8. Bid Price']),
+        ask_price: new Decimal(realtimeCurrencyExchangeRate['9. Ask Price']),
       };
 
       return currencyExchangeRate;

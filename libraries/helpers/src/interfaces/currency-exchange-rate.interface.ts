@@ -1,4 +1,9 @@
-import { CurrencyCode } from '@prisma/client';
+import {
+  CurrencyCode,
+  ForexExchangeRates,
+  CurrencyExchangeRate as PrimaCurrencyExchangeRate,
+} from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 
 export interface CurrencyExchangeRateResponse {
   'Realtime Currency Exchange Rate': RealtimeCurrencyExchangeRate;
@@ -11,11 +16,11 @@ export interface CurrencyExchangeRate {
   from_currency_name: string;
   to_currency_code: CurrencyCode;
   to_currency_name: string;
-  exchange_rate: number;
+  exchange_rate: Decimal;
   last_refreshed_at: string;
   time_zone: string;
-  bid_price: number;
-  ask_price: number;
+  bid_price: Decimal;
+  ask_price: Decimal;
 }
 
 export interface RealtimeCurrencyExchangeRate {
@@ -42,3 +47,7 @@ export interface ForexExchangeRatesRedisData {
   forex_exchange_rates_expires_at: string;
   currency_exchange_rates: CurrencyExchangeRate[];
 }
+
+export type ForexExchangeRatesDbData = ForexExchangeRates & {
+  currency_exchange_rates: PrimaCurrencyExchangeRate[];
+};

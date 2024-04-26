@@ -16,10 +16,11 @@ export class CurrencyConverterService {
     fromCurrencyCode: CurrencyCode;
     amount: number;
   }) {
+    const { amount, exchangeRate } = data;
     if (data.fromCurrencyCode === BASE_CURRENCY) {
       return data.amount;
     } else {
-      const convertedAmount = data.amount / data.exchangeRate;
+      const convertedAmount = amount / exchangeRate;
       return convertedAmount;
     }
   }
@@ -38,6 +39,7 @@ export class CurrencyConverterService {
     toCurrencyCode: CurrencyCode;
     amount: number;
   }) {
+    const { amount, exchangeRate } = data;
     if (data.toCurrencyCode === BASE_CURRENCY) {
       return data.amount;
     } else {
@@ -54,29 +56,30 @@ export class CurrencyConverterService {
    */
   static convert(data: {
     fromCurrencyCode: CurrencyCode;
-    fromCurrencyExchangeRate: number;
+    fromCurrencyExchangeRateFromBaseCurrency: Decimal;
     toCurrencyCode: CurrencyCode;
-    toCurrencyExchangeRate: number;
+    toCurrencyExchangeRateFromBaseCurrency: Decimal;
     amount: number;
   }) {
     const amountInBaseCurrency = this.convertToBaseCurrency({
       fromCurrencyCode: data.fromCurrencyCode,
       amount: data.amount,
-      exchangeRate: data.fromCurrencyExchangeRate,
+      exchangeRate: Number(data.fromCurrencyExchangeRateFromBaseCurrency),
     });
 
     const amountInTargetCurrency = this.convertFromBaseCurrency({
       toCurrencyCode: data.toCurrencyCode,
       amount: amountInBaseCurrency,
-      exchangeRate: data.toCurrencyExchangeRate,
+      exchangeRate: Number(data.toCurrencyExchangeRateFromBaseCurrency),
     });
 
     return amountInTargetCurrency;
   }
 
-  static sumBalances(data: { prevBalance: Decimal; amount: number }) {
+  static sumBalances(data: { prevBalance: Decimal; amount: Decimal }) {
     const { prevBalance, amount } = data;
-    const sum = prevBalance.add(new Decimal(amount));
+
+    const sum = prevBalance.add(amount);
     return sum;
   }
 }

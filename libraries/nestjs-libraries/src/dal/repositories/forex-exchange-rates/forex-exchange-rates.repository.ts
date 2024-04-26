@@ -3,6 +3,7 @@ import { PrismaRepository } from '../../prisma/prisma.service';
 
 import {
   ForexExchangeRatesData,
+  ForexExchangeRatesDbData,
   RealtimeCurrencyExchangeRate,
 } from '@forexsystem/helpers/interfaces';
 @Injectable()
@@ -54,14 +55,21 @@ export class ForexExchangeRatesRepository {
       where: {
         forex_exchange_rates_id: data.forex_exchange_rates_id,
       },
+      include: {
+        currency_exchange_rates: true,
+      },
     });
   }
 
-  // async getForexExchangeRatesByExpiresAt(){
-  //   return this._forexExchangeRates.model.forexExchangeRates.findFirst({
-  //     where:{
-  //       forex_exchange_rates_id
-  //     }
-  //   })
-  // }
+  async getForexExchangeRatesByUpdatedAt() {
+    return this._forexExchangeRates.model.forexExchangeRates.findMany({
+      orderBy: {
+        updated_at: 'desc',
+      },
+      include: {
+        currency_exchange_rates: true,
+      },
+      take: 1,
+    });
+  }
 }

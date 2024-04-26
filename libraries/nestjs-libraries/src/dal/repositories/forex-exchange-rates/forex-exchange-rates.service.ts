@@ -29,4 +29,8 @@ export class ForexExchangeRatesService {
   ) {
     return this._forexExchangeRatesRepository.getForexExchangeRatesById(data);
   }
+
+  async getLatestForexExchangeRates() {
+    return this._forexExchangeRatesRepository.getForexExchangeRatesByUpdatedAt();
+  }
 }

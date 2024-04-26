@@ -5,25 +5,27 @@ import {
   IsNumber,
   IsPositive,
   IsEnum,
+  IsOptional,
 } from 'class-validator';
 
 export class FxConversionDto {
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
+  @IsOptional()
   forex_exchange_rates_id: string;
 
-  @IsString()
   @IsEnum(CurrencyCode)
-  @IsNotEmpty()
-  from_currency_code: string;
-
   @IsString()
-  @IsEnum(CurrencyCode)
   @IsNotEmpty()
-  to_currency_code: string;
+  from_currency_code: CurrencyCode;
 
+  @IsEnum(CurrencyCode)
+  @IsString()
   @IsNotEmpty()
-  @IsNumber()
+  to_currency_code: CurrencyCode;
+
   @IsPositive({ message: 'Amount must be greater than zero.' })
+  @IsNumber()
+  @IsNotEmpty()
   amount: number;
 }
