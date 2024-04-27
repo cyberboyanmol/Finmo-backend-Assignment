@@ -113,7 +113,7 @@ export class CryptoService {
       token,
       process.env.JWT_ACCESS_TOKEN_SECRET!,
       options
-    );
+    ) as { user_id: string };
     return decoded;
   }
 
@@ -135,7 +135,7 @@ export class CryptoService {
       token,
       process.env.JWT_REFRESH_TOKEN_SECRET!,
       options
-    );
+    ) as { user_id: string };
     return decoded;
   }
 }
