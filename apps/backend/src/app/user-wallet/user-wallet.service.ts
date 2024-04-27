@@ -9,63 +9,85 @@ import { ForexExchangeRatesLastestRedisKey } from '@forexsystem/helpers/utils/co
 import { CurrencyCode } from '@prisma/client';
 import { GetUserWalletBalanceData } from './interfaces/get-user-wallet-balance.interface';
 import { Decimal } from '@prisma/client/runtime/library';
+import { ForexExchangeRatesService } from '@forexsystem/nestjs-libraries/dal/repositories/forex-exchange-rates/forex-exchange-rates.service';
 
 @Injectable()
 export class UserWalletService {
   private readonly logger = new Logger(UserWalletService.name);
   constructor(
-    private readonly _WalletService: WalletService,
+    private readonly _walletService: WalletService,
     private _configService: ConfigService,
-    private readonly _redisSerivce: RedisService
+    private _forexExchangeRatesService: ForexExchangeRatesService,
+    private readonly _redisService: RedisService
   ) {}
-  async addBalanceToWallet(body: TopupAccountDto) {
-    // fetch the live fx rate of base currency and user given currency from the InMemory db
 
-    const forex_exchange_rates = await this._redisSerivce.getForexExchangeRate(
-      `${BASE_CURRENCY}:${body.currency}`
+  async addBalanceToWallet(body: TopupAccountDto) {
+    const { currency, amount } = body;
+    const user_id = '6503ba45-ba65-48ce-8156-7df09aa28d3e';
+
+    const forexExchangeRates = await this._redisService.getForexExchangeRate(
+      `${BASE_CURRENCY}:${currency}`
     );
 
-    if (!forex_exchange_rates) {
+    if (!forexExchangeRates) {
       throw new BadRequestException('Wrong currency code');
     }
+
+    const exchangeRate = Number(
+      forexExchangeRates.currency_exchange_rates[0].exchange_rate
+    );
     const amountInBaseCurrency = CurrencyConverterService.convertToBaseCurrency(
       {
-        fromCurrencyCode: body.currency,
-        exchangeRate: Number(
-          forex_exchange_rates.currency_exchange_rates[0].exchange_rate
-        ),
-        amount: body.amount,
+        fromCurrencyCode: currency,
+        exchangeRate,
+        amount,
       }
     );
 
-    // update the balance in database
+    const currentUserWalletBalance =
+      await this._walletService.getUserWalletBalance({ user_id });
 
-    const currentUserWalletbalance =
-      await this._WalletService.getUserWalletBalance({
-        user_id: '6503ba45-ba65-48ce-8156-7df09aa28d3e',
-      });
-
-    const updateBalance = CurrencyConverterService.sumBalances({
-      prevBalance: currentUserWalletbalance.account_balance,
+    const updatedBalance = CurrencyConverterService.sumBalances({
+      prevBalance: currentUserWalletBalance.account_balance,
       amount: new Decimal(amountInBaseCurrency),
     });
 
     const updateUserWalletBalance =
-      await this._WalletService.addBalancetoUserWallet({
-        user_id: '6503ba45-ba65-48ce-8156-7df09aa28d3e',
-        account_balance: updateBalance,
+      await this._walletService.addBalancetoUserWallet({
+        user_id,
+        account_balance: updatedBalance,
       });
 
     return updateUserWalletBalance;
   }
 
   async getUserWalletBalance(): Promise<GetUserWalletBalanceData | null> {
-    const forex_exchange_rates = await this._redisSerivce.getForexExchangeRate(
-      ForexExchangeRatesLastestRedisKey
-    );
+    const user_id = '6503ba45-ba65-48ce-8156-7df09aa28d3e';
+    const currentUserWalletBalance =
+      await this._walletService.getUserWalletBalance({ user_id });
+
+    const forexExchangeRatesFromRedis =
+      await this._redisService.getForexExchangeRate(
+        ForexExchangeRatesLastestRedisKey
+      );
+
+    const forexExchangeRatesFromDb = forexExchangeRatesFromRedis
+      ? null
+      : (
+          await this._forexExchangeRatesService.getLatestForexExchangeRates()
+        )[0];
+
+    const forexExchangeRates =
+      forexExchangeRatesFromRedis || forexExchangeRatesFromDb;
+
+    if (
+      !forexExchangeRates ||
+      !forexExchangeRates.currency_exchange_rates.length
+    ) {
+      return null;
+    }
 
     const balances: Record<CurrencyCode, Decimal> = {
-      USD: new Decimal(0),
       AED: new Decimal(0),
       AFN: new Decimal(0),
       ALL: new Decimal(0),
@@ -208,6 +230,7 @@ export class UserWalletService {
       TZS: new Decimal(0),
       UAH: new Decimal(0),
       UGX: new Decimal(0),
+      USD: new Decimal(0),
       UYU: new Decimal(0),
       UZS: new Decimal(0),
       VND: new Decimal(0),
@@ -224,35 +247,24 @@ export class UserWalletService {
       ZWL: new Decimal(0),
     };
 
-    const currentUserWalletbalance =
-      await this._WalletService.getUserWalletBalance({
-        user_id: '6503ba45-ba65-48ce-8156-7df09aa28d3e',
-      });
+    for (const currencyExchangeRate of forexExchangeRates.currency_exchange_rates) {
+      const balanceInCurrency =
+        CurrencyConverterService.convertFromBaseCurrency({
+          exchangeRate: Number(currencyExchangeRate.exchange_rate),
+          amount: Number(currentUserWalletBalance.account_balance),
+          toCurrencyCode: currencyExchangeRate.to_currency_code,
+        });
 
-    if (
-      forex_exchange_rates &&
-      forex_exchange_rates.currency_exchange_rates.length
-    ) {
-      for (const currencyExchangeRate of forex_exchange_rates.currency_exchange_rates) {
-        const balanceInCurrency =
-          CurrencyConverterService.convertFromBaseCurrency({
-            exchangeRate: Number(currencyExchangeRate.exchange_rate),
-            amount: Number(currentUserWalletbalance.account_balance),
-            toCurrencyCode: currencyExchangeRate.to_currency_code,
-          });
-
-        balances[currencyExchangeRate.to_currency_code] = new Decimal(
-          balanceInCurrency
-        );
-      }
-    } else {
-      // here from presistance database
+      balances[currencyExchangeRate.to_currency_code] = new Decimal(
+        balanceInCurrency
+      );
     }
 
     return {
-      forex_exchange_rates_id: forex_exchange_rates.forex_exchange_rates_id,
-      forex_exchange_rates_expires_at:
-        forex_exchange_rates.forex_exchange_rates_expires_at,
+      forex_exchange_rates_id: forexExchangeRates.forex_exchange_rates_id,
+      forex_exchange_rates_expires_at: String(
+        forexExchangeRates.forex_exchange_rates_expires_at
+      ),
       balances,
     };
   }

@@ -100,13 +100,84 @@ export class ForexService {
     };
   }
 
+  // async fxConversion(body: FxConversionDto) {
+  //   const {
+  //     forex_exchange_rates_id,
+  //     from_currency_code,
+  //     to_currency_code,
+  //     amount,
+  //   } = body;
+  //   const redisData = await this._redisService.getForexExchangeRate(
+  //     ForexExchangeRatesLastestRedisKey
+  //   );
+  //   const dbData = forex_exchange_rates_id
+  //     ? await this._forexExchangeRatesService.getForexExchangeRatesById({
+  //         forex_exchange_rates_id,
+  //       })
+  //     : (
+  //         await this._forexExchangeRatesService.getLatestForexExchangeRates()
+  //       )[0];
+
+  //   const exchangeRates = this.getExchangeRates(
+  //     redisData,
+  //     dbData,
+  //     from_currency_code,
+  //     to_currency_code
+  //   );
+
+  //   if (!exchangeRates) {
+  //     throw new Error('Exchange rates not found');
+  //   }
+
+  //   const { fromCurrencyExchangeRate, toCurrencyExchangeRate } = exchangeRates;
+  //   const result = CurrencyConverterService.convert({
+  //     fromCurrencyCode: from_currency_code,
+  //     fromCurrencyExchangeRateFromBaseCurrency:
+  //       fromCurrencyExchangeRate.exchange_rate,
+  //     toCurrencyCode: to_currency_code,
+  //     toCurrencyExchangeRateFromBaseCurrency:
+  //       toCurrencyExchangeRate.exchange_rate,
+  //     amount,
+  //   });
+
+  //   return {
+  //     convertedAmount: result,
+  //     currency: to_currency_code,
+  //   };
+  // }
+
+  // private getExchangeRates(
+  //   redisData: ForexExchangeRatesRedisData | null,
+  //   dbData: ForexExchangeRatesDbData | null,
+  //   fromCurrencyCode: CurrencyCode,
+  //   toCurrencyCode: CurrencyCode
+  // ): {
+  //   fromCurrencyExchangeRate: CurrencyExchangeRate;
+  //   toCurrencyExchangeRate: CurrencyExchangeRate;
+  // } | null {
+  //   const data =
+  //     redisData?.currency_exchange_rates ||
+  //     dbData?.currency_exchange_rates ||
+  //     [];
+
+  //   const fromCurrencyExchangeRate = data.find(
+  //     (rate) => rate.to_currency_code === fromCurrencyCode
+  //   );
+  //   const toCurrencyExchangeRate = data.find(
+  //     (rate) => rate.to_currency_code === toCurrencyCode
+  //   );
+
+  //   if (!fromCurrencyExchangeRate || !toCurrencyExchangeRate) {
+  //     return null;
+  //   }
+
+  //   return { fromCurrencyExchangeRate, toCurrencyExchangeRate };
+  // }
+
+  //  THIS FUNCTION IS ONLY VALID FOR DEMO APIKEY OF ALPHAVANTAGE.CO
   async fxConversionFormBaseCurrency(body: FxConversionDto) {
-    const {
-      forex_exchange_rates_id,
-      from_currency_code,
-      to_currency_code,
-      amount,
-    } = body;
+    const { forex_exchange_rates_id, to_currency_code, amount } = body;
+
     const redisData = await this._redisService.getForexExchangeRate(
       ForexExchangeRatesLastestRedisKey
     );
@@ -144,6 +215,7 @@ export class ForexService {
     };
   }
 
+  //  THIS FUNCTION IS ONLY VALID FOR DEMO APIKEY OF ALPHAVANTAGE.CO
   private getExchangeRates(
     redisData: ForexExchangeRatesRedisData | null,
     dbData: ForexExchangeRatesDbData | null,
