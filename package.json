@@ -10,7 +10,8 @@
     "prisma:generate": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma generate ",
     "prisma:studio": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma studio ",
     "prisma:db:push": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma db push",
-    "prisma:migrate:dev": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma migrate dev",
+    "prisma:migrate:dev": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma migrate dev ",
+    "prisma:migrate:deploy": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma migrate deploy",
     "prisma:db:reset": "cd ./libraries/nestjs-libraries/src/dal/prisma && npx prisma db push --force-reset && npx prisma db push"
   },
   "private": true,

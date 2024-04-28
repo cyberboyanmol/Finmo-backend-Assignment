@@ -21,6 +21,8 @@ model User {
     updated_at        DateTime       @updatedAt
     refresh_token     RefreshToken[]
     user_wallet       UserWallet?
+
+    @@index([email])
 }
 
 model UserWallet {
@@ -31,6 +33,8 @@ model UserWallet {
     currency_code   CurrencyCode @default(USD)
     created_at      DateTime     @default(now())
     updated_at      DateTime     @updatedAt
+
+    @@index([user_id])
 }
 
 model RefreshToken {
@@ -38,6 +42,8 @@ model RefreshToken {
     token            String @unique
     user             User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
     user_id          String
+
+    @@index([token, user_id])
 }
 
 model ForexExchangeRates {
@@ -47,6 +53,8 @@ model ForexExchangeRates {
     forex_exchange_rates_expires_at DateTime               @unique
     created_at                      DateTime               @default(now())
     updated_at                      DateTime               @updatedAt
+
+    @@index([updated_at, forex_exchange_rates_id])
 }
 
 model CurrencyExchangeRate {
@@ -64,6 +72,8 @@ model CurrencyExchangeRate {
     created_at             DateTime           @default(now())
     forex_exchange_rate    ForexExchangeRates @relation(fields: [forex_exchange_rate_id], references: [forex_exchange_rates_id])
     forex_exchange_rate_id String
+
+    @@index([forex_exchange_rate_id])
 }
 
 enum CurrencyCode {

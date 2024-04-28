@@ -23,7 +23,7 @@ export class SyncForexExchangeRateService {
     @InjectForexExchangeRatesQueue() private _forexExchangeRatesQueue: Queue
   ) {}
 
-  // THIS CRON WILL ONLY ADD THE USD TO INR FETCHING URL
+  // THIS CRON WILL ONLY ADD THE USD TO JPY FETCHING URL
   // DUE TO ALPHA VANTAGE API HARD RATE LIMIT (i.e 25 requests a day only)
   @Cron(CronExpression.EVERY_30_SECONDS)
   async syncForexExchangeRatesEvery30SecondsWithDemoKey() {
