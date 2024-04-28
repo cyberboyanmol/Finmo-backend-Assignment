@@ -228,7 +228,7 @@ to
 const res = await this._forexService.fxConversion(body);
 ```
 
-## Activate Cron Job (Cron App):
+## Code Updates Cron Job (Cron App):
 
 Uncomment the cron scheduler in the file to enable fetching of exchange rates for all currencies every 30 seconds (recommended only if you have a premium API key).
 
