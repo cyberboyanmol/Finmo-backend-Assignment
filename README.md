@@ -51,7 +51,7 @@
 
 ### 1. Prerequisites
 
-- Node.js and Docker: Install the latest versions from their respective official websites: [Nodejs](https://nodejs.org/) and [Docker](https://docker.com).
+- Node.js and Docker: Install the latest versions from their respective official websites: [Nodejs](s://nodejs.org/) and [Docker](s://docker.com).
 
 ### 2. Project Setup:
 
@@ -122,7 +122,7 @@ Run the following command to apply database migrations, ensuring your database s
 
 # ⚠️ Important Note:
 
-This project utilizes the Alphavantage.co API (https://www.alphavantage.co/) for retrieving live exchange rates. However, the free tier has a **strict rate limit of 25 requests per day**.
+This project utilizes the Alphavantage.co API (s://www.alphavantage.co/) for retrieving live exchange rates. However, the free tier has a **strict rate limit of 25 requests per day**.
 
 ### Currently:
 
@@ -299,13 +299,13 @@ and comment :
 
 #### Base Url
 
-```http
+```
   http://localhost:9000/
 ```
 
 #### Swagger Docs
 
-```http
+```
   http://localhost:9000/api/v1/docs
 ```
 
@@ -313,7 +313,7 @@ and comment :
 
 #### Register User
 
-```http
+```
   POST /api/v1/auth/register
 ```
 
@@ -326,7 +326,7 @@ and comment :
 
 #### Login User
 
-```http
+```
   POST /api/v1/auth/login
 ```
 
@@ -337,7 +337,7 @@ and comment :
 
 #### Refresh Token
 
-```http
+```
   GET /api/v1/auth/refresh-token
 ```
 
@@ -351,7 +351,7 @@ Cookie: refresh_token=<your_refresh_token>
 
 > 📝 **NOTE**: Currently, this API endpoint only supports the JPY currency.
 
-```http
+```
   POST /api/v1/accounts/topup
 ```
 
@@ -364,7 +364,7 @@ Cookie: refresh_token=<your_refresh_token>
 
 > 📝 **NOTE**: Currently, this API endpoint only supports the JPY currency.
 
-```http
+```
   GET /api/v1/accounts/balance
 ```
 
@@ -374,7 +374,7 @@ Cookie: refresh_token=<your_refresh_token>
 
 > 📝 **NOTE**: Currently, this endpoint is only working for the USD->JPY currency conversion.
 
-```http
+```
   POST /api/v1/fx-conversion
 ```
 
@@ -389,7 +389,7 @@ Cookie: refresh_token=<your_refresh_token>
 
 > 📝 **NOTE**: Currently, this endpoint is only working for the USD->JPY currency conversion.
 
-```http
+```
   GET /api/v1/fx-rates
 ```
 
