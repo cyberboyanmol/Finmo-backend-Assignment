@@ -309,6 +309,10 @@ and comment :
   http://localhost:9000/api/v1/docs
 ```
 
+```
+https://forex-trading-system-assignment-production.up.railway.app/api/v1/docs
+```
+
 ## Authentication
 
 #### Register User
