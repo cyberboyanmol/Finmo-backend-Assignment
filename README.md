@@ -345,6 +345,8 @@ https://forex-trading-system-assignment-production.up.railway.app/api/v1/docs
   GET /api/v1/auth/refresh-token
 ```
 
+> 🔒 **NOTE**: This Api Endpoint required Authorization in cookie need to be pass refresh_token".
+
 ```cookie
 Cookie: refresh_token=<your_refresh_token>
 ```
@@ -354,6 +356,8 @@ Cookie: refresh_token=<your_refresh_token>
 ### 1. This API endpoint allows users to top up their account with a specified amount in a given currency.
 
 > 📝 **NOTE**: Currently, this API endpoint only supports the JPY currency.
+
+> 🔒 **NOTE**: This Api Endpoint required Authorization header "Bearer token".
 
 ```
   POST /api/v1/accounts/topup
@@ -367,6 +371,8 @@ Cookie: refresh_token=<your_refresh_token>
 ### 2. This API retrieves the balances in all currencies for the user's account..
 
 > 📝 **NOTE**: Currently, this API endpoint only supports the JPY currency.
+
+> 🔒 **NOTE**: This Api Endpoint required Authorization header "Bearer token".
 
 ```
   GET /api/v1/accounts/balance
