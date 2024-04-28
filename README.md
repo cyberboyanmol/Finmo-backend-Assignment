@@ -51,7 +51,7 @@
 
 ### 1. Prerequisites
 
-- Node.js and Docker: Install the latest versions from their respective official websites: [Nodejs](https://nodejs.org/) and [Docker](https://docker.com).
+- Node.js >=v20.10.0 and Docker: Install the latest versions from their respective official websites: [Nodejs](https://nodejs.org/) and [Docker](https://docker.com).
 
 ### 2. Project Setup:
 
