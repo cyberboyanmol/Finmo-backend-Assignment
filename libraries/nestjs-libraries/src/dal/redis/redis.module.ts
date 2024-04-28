@@ -7,9 +7,6 @@ import { RedisService } from './redis.service';
     IRedisModule.forRoot({
       type: 'single',
       url: process.env.REDIS_URL!,
-      // url: `rediss://${process.env['REDIS_HOST']!}:${process.env[
-      //   'REDIS_PORT'
-      // ]!}`,
     }),
   ],
   controllers: [],

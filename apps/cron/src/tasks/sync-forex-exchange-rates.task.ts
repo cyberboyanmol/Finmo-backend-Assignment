@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-// import axios from 'axios';
 import {
   currencyCodesWithName,
   CurrencyCodeInterface,
@@ -47,12 +46,13 @@ export class SyncForexExchangeRateService {
       forex_exchange_rates_expires_at,
     };
 
-    console.log('Adding jobs to queue :', forex_exchange_rates_id);
-
-    this._forexExchangeRatesQueue.add(
-      ForexJobPattern.SYNC_FOREX_EXCHANGE_RATES,
-      { ...eventData }
-    );
+    for (let i = 0; i < 157; i++) {
+      this._forexExchangeRatesQueue.add(
+        ForexJobPattern.SYNC_FOREX_EXCHANGE_RATES,
+        { ...eventData }
+      );
+      console.log('Adding jobs to queue :', i, forex_exchange_rates_id);
+    }
   }
 
   // @Cron(CronExpression.EVERY_30_SECONDS)

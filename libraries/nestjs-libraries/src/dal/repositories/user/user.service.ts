@@ -7,7 +7,7 @@ export class UserService {
   constructor(private _userRepository: UserRepository) {}
 
   getUserByEmail(email: string) {
-    return this._userRepository.getUserByEmail(email);
+    return this._userRepository.findUserByEmail(email);
   }
 
   async createUser(body: CreateUserDto) {

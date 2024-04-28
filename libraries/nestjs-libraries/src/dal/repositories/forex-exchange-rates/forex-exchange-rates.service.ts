@@ -27,10 +27,10 @@ export class ForexExchangeRatesService {
   async getForexExchangeRatesById(
     data: Pick<ForexExchangeRatesData, 'forex_exchange_rates_id'>
   ) {
-    return this._forexExchangeRatesRepository.getForexExchangeRatesById(data);
+    return this._forexExchangeRatesRepository.findForexExchangeRatesById(data);
   }
 
   async getLatestForexExchangeRates() {
-    return this._forexExchangeRatesRepository.getForexExchangeRatesByUpdatedAt();
+    return this._forexExchangeRatesRepository.findForexExchangeRatesByUpdatedAt();
   }
 }

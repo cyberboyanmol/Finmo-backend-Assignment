@@ -50,7 +50,7 @@ export class ConfigService implements Config {
   get ALPHA_VANTAGE_API_KEYS(): string {
     return this.configService.get<string>('ALPHA_VANTAGE_API_KEYS');
   }
-  get _BCRYPT_SECRET_PEPPER(): string {
-    return this.configService.get<string>('_BCRYPT_SECRET_PEPPER');
+  get BCRYPT_SECRET_PEPPER(): string {
+    return this.configService.get<string>('BCRYPT_SECRET_PEPPER');
   }
 }

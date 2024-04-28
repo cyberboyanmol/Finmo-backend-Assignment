@@ -10,7 +10,6 @@ import { CurrencyCode } from '@prisma/client';
 import { GetUserWalletBalanceData } from './interfaces/get-user-wallet-balance.interface';
 import { Decimal } from '@prisma/client/runtime/library';
 import { ForexExchangeRatesService } from '@forexsystem/nestjs-libraries/dal/repositories/forex-exchange-rates/forex-exchange-rates.service';
-
 @Injectable()
 export class UserWalletService {
   private readonly logger = new Logger(UserWalletService.name);
@@ -21,9 +20,8 @@ export class UserWalletService {
     private readonly _redisService: RedisService
   ) {}
 
-  async addBalanceToWallet(body: TopupAccountDto) {
+  async addBalanceToWallet(user_id: string, body: TopupAccountDto) {
     const { currency, amount } = body;
-    const user_id = '6503ba45-ba65-48ce-8156-7df09aa28d3e';
 
     const forexExchangeRates = await this._redisService.getForexExchangeRate(
       `${BASE_CURRENCY}:${currency}`
@@ -61,8 +59,9 @@ export class UserWalletService {
     return updateUserWalletBalance;
   }
 
-  async getUserWalletBalance(): Promise<GetUserWalletBalanceData | null> {
-    const user_id = '6503ba45-ba65-48ce-8156-7df09aa28d3e';
+  async getUserWalletBalance(
+    user_id: string
+  ): Promise<GetUserWalletBalanceData | null> {
     const currentUserWalletBalance =
       await this._walletService.getUserWalletBalance({ user_id });
 
@@ -261,10 +260,8 @@ export class UserWalletService {
     }
 
     return {
-      forex_exchange_rates_id: forexExchangeRates.forex_exchange_rates_id,
-      forex_exchange_rates_expires_at: String(
-        forexExchangeRates.forex_exchange_rates_expires_at
-      ),
+      user_id: currentUserWalletBalance.user_id,
+      account_id: currentUserWalletBalance.account_id,
       balances,
     };
   }

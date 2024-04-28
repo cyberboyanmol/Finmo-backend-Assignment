@@ -1,6 +1,4 @@
 import { CurrencyExchangeRate } from '@forexsystem/helpers/interfaces';
-import { ForexExchangeRates } from '@prisma/client';
-import { CurrencyExchangeRate as PrimaCurrencyExchangeRate } from '@prisma/client';
 
 export interface GetFxRatesInterface {
   forex_exchange_rates_id: string;
@@ -14,5 +12,3 @@ export interface GetFxRatesInterface {
     | 'from_currency_name'
   >[];
 }
-
-

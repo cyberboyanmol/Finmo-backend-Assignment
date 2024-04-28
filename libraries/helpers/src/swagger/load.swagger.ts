@@ -3,8 +3,14 @@ import { INestApplication } from '@nestjs/common';
 
 export const loadSwagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
-    .setTitle('Forex-trading-system swagger file')
-    .setDescription('API description')
+    .setTitle('Forex-trading-system Assignment swagger file')
+    .setDescription(``)
+    .addBearerAuth({
+      bearerFormat: '<Bearer token>',
+      type: 'apiKey',
+    })
+    .addServer('http://localhost:9000', 'Local environment')
+    .addServer('https://forex-trading-system.com', 'Production')
     .setVersion('1.0')
     .build();
 
