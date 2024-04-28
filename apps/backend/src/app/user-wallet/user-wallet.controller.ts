@@ -59,7 +59,7 @@ export class UserWalletController {
   @ApiOperation({
     summary: `This API retrieves the balances in all currencies for the user's account`,
     description:
-      'This API allows users to top up their account with a specified amount in a given currency. NOTE: **Currently this api endpoint only supports JPY currency**',
+      `This API retrieves the balances in all currencies for the user's account. NOTE: **Currently this api endpoint only supports JPY currency**`,
   })
   @ApiOkResponse({
     description: 'It Return list of user wallet balance in all currencies',

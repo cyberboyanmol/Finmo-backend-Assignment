@@ -21,7 +21,7 @@ export const loadSwagger = (app: INestApplication) => {
 
         ## 🏁 Installation
 
-        Follow [these](https://github.com/cyberboyanmol/) instructions for the installation and project setup.
+        Follow [these](https://github.com/cyberboyanmol/Forex-Trading-System-Assignment) instructions for the installation and project setup.
         `
     )
     .addBearerAuth(

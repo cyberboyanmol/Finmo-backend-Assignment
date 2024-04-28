@@ -52,7 +52,7 @@ export class ForexController {
     summary:
       'This API  endpoint gives live FX exchange rates between currencies',
     description:
-      'This API endpoint gives live FX exchanges rates. NOTE : **Currently this endpoint is only working for the USD->JPY currency**',
+      '. This API endpoint gives lists of live FX exchanges rates of all currencies. NOTE : **Currently this endpoint is only working for the USD->JPY currency**',
   })
   @ApiOkResponse({
     description:

@@ -259,3 +259,111 @@ and comment :
     console.log('Adding jobs to queue :', forex_exchange_rates_id);
   }
 ```
+
+# API Reference
+
+#### Base Url
+
+```http
+  http://localhost:9000/
+```
+
+#### Swagger Docs
+
+```http
+  http://localhost:9000/api/v1/docs
+```
+
+## Authentication
+
+#### Register User
+
+```http
+  POST /api/v1/auth/register
+```
+
+| Parameter   | Type     | Description              |
+| :---------- | :------- | :----------------------- |
+| `email`     | `string` | **Required**.            |
+| `password`  | `string` | **Required**.            |
+| `firstName` | `string` | **Required**.            |
+| `lastName`  | `string` | **Required**. (Optional) |
+
+#### Login User
+
+```http
+  POST /api/v1/auth/login
+```
+
+| Parameter  | Type     | Description   |
+| :--------- | :------- | :------------ |
+| `email`    | `string` | **Required**. |
+| `password` | `string` | **Required**. |
+
+#### Refresh Token
+
+```http
+  GET /api/v1/auth/refresh-token
+```
+
+```cookie
+Cookie: refresh_token=<your_refresh_token>
+```
+
+## User Wallet
+
+### 1. This API endpoint allows users to top up their account with a specified amount in a given currency.
+
+> 📝 **NOTE**: Currently, this API endpoint only supports the JPY currency.
+
+```http
+  POST /api/v1/accounts/topup
+```
+
+| Parameter  | Type     | Description   |
+| :--------- | :------- | :------------ |
+| `currency` | `string` | **Required**. |
+| `amount`   | `string` | **Required**. |
+
+### 2. This API retrieves the balances in all currencies for the user's account..
+
+> 📝 **NOTE**: Currently, this API endpoint only supports the JPY currency.
+
+```http
+  GET /api/v1/accounts/balance
+```
+
+## Forex Endpoint
+
+#### 1.This API performs an FX conversion using the provided <code>forex_exchange_rates_id</code> and converts the specified amount from one currency to another.
+
+> 📝 **NOTE**: Currently, this endpoint is only working for the USD->JPY currency conversion.
+
+```http
+  POST /api/v1/fx-conversion
+```
+
+| Parameter                 | Type     | Description   |
+| :------------------------ | :------- | :------------ |
+| `forex_exchange_rates_id` | `string` | **Required**. |
+| `from_currency_code`      | `string` | **Required**. |
+| `to_currency_code`        | `string` | **Required**. |
+| `amount`                  | `string` | **Required**. |
+
+#### 2.This API endpoint gives a list of live FX exchange rates for all currencies.
+
+> 📝 **NOTE**: Currently, this endpoint is only working for the USD->JPY currency conversion.
+
+```http
+  GET /api/v1/fx-rates
+```
+
+# Support 🤝
+
+If you encounter any issues or have questions while setting up this application, please don't hesitate to reach out! We're here to help!
+
+**Contact:**
+
+- **Email:** `anmolgangwar64+forex@gmail.com`
+
+# Happy Hacking! 🚀
