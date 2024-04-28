@@ -1,8 +1,43 @@
 # Forex-trading-system Assignment
 
-This is Implementation of Forex Trading backend system using Nestjs.
+> This is Implementation of Forex Trading backend system using Nestjs.
 
-Key Features:
+# Table of Contents
+
+1. [Forex-trading-system Assignment](#forex-trading-system-assignment)
+
+- [Key Features](#key-features)
+
+2. [Installation Guide](#installation-guide)
+
+- [1. Prerequisites](#1-prerequisites)
+- [2. Project Setup](#2-project-setup)
+- [3. Install Dependencies](#3-install-dependencies)
+- [4. Run the PostgreSQL and Redis Server using Docker](#4-run-the-postgresql-and-redis-server-using-docker)
+- [5. Generate Prisma Client](#5-generate-prisma-client)
+- [6. Apply Database Migrations](#6-apply-database-migrations)
+- [6. Run the Project](#6-run-the-project)
+- [Run each apps separately (Optional)](#run-the-apps-separately-optional)
+- [Important Note](#mportant-note)
+- [To Unlock Full Currency Support](#to-unlock-full-currency-support)
+- [How to Enable Full Currency Support (if you have a premium API key)](#how-to-enable-full-currency-support-if-you-have-a-premium-api-key)
+  - [Code Updates (Backend App)](#code-updates-backend-app)
+  - [Activate Cron Job (Cron App)](#activate-cron-job-cron-app)
+
+3. [API Reference](#api-reference)
+
+- [Base Url](#base-url)
+- [Swagger Docs](#swagger-docs)
+- [Authentication](#authentication)
+  - [Register User](#register-user)
+  - [Login User](#login-user)
+  - [Refresh Token](#refresh-token)
+- [User Wallet](#user-wallet)
+- [Forex Endpoint](#forex-endpoint)
+
+4. [Support](#support)
+
+# Key Features:
 
 - **Live FX Exchange Rates**: Stay ahead of the market with live foreign exchange rates that are updated every 30 seconds, ensuring you have access to the most up-to-date pricing information for informed trading decisions.
 
@@ -65,7 +100,7 @@ Run the following command to apply database migrations, ensuring your database s
   npm run dev
 ```
 
-## Run the apps separately (Optional):
+## Run each apps separately (Optional):
 
 - Run Workers
 
@@ -85,7 +120,7 @@ Run the following command to apply database migrations, ensuring your database s
   npm run backend
 ```
 
-## ⚠️ Important Note:
+# ⚠️ Important Note:
 
 This project utilizes the Alphavantage.co API (https://www.alphavantage.co/) for retrieving live exchange rates. However, the free tier has a **strict rate limit of 25 requests per day**.
 
