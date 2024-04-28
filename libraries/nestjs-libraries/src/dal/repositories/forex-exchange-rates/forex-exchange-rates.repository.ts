@@ -48,7 +48,7 @@ export class ForexExchangeRatesRepository {
     });
   }
 
-  async getForexExchangeRatesById(
+  async findForexExchangeRatesById(
     data: Pick<ForexExchangeRatesData, 'forex_exchange_rates_id'>
   ) {
     return this._forexExchangeRates.model.forexExchangeRates.findUnique({
@@ -61,7 +61,7 @@ export class ForexExchangeRatesRepository {
     });
   }
 
-  async getForexExchangeRatesByUpdatedAt() {
+  async findForexExchangeRatesByUpdatedAt() {
     return this._forexExchangeRates.model.forexExchangeRates.findMany({
       orderBy: {
         updated_at: 'desc',

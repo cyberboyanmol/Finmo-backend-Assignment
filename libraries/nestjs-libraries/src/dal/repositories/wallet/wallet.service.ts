@@ -6,12 +6,12 @@ export class WalletService {
   constructor(private _walletRepository: WalletRepository) {}
 
   async getUserWalletBalance(user_id: Pick<UserWallet, 'user_id'>) {
-    return this._walletRepository.getUserWalletBalance(user_id);
+    return this._walletRepository.findUserWalletBalance(user_id);
   }
 
   async addBalancetoUserWallet(
     data: Pick<UserWallet, 'user_id' | 'account_balance'>
   ) {
-    return this._walletRepository.addBalancetoUserWallet(data);
+    return this._walletRepository.updateUserWallet(data);
   }
 }

@@ -4,7 +4,7 @@ import { UserWallet } from '@prisma/client';
 @Injectable()
 export class WalletRepository {
   constructor(private _walletAccount: PrismaRepository<'userWallet'>) {}
-  async getUserWalletBalance(data: Pick<UserWallet, 'user_id'>) {
+  async findUserWalletBalance(data: Pick<UserWallet, 'user_id'>) {
     return this._walletAccount.model.userWallet.findUnique({
       where: {
         user_id: data.user_id,
@@ -12,6 +12,7 @@ export class WalletRepository {
       select: {
         user_id: true,
         account_balance: true,
+        account_id: true,
         currency_code: true,
         user: {
           select: {
@@ -23,7 +24,7 @@ export class WalletRepository {
     });
   }
 
-  async addBalancetoUserWallet(
+  async updateUserWallet(
     data: Pick<UserWallet, 'user_id' | 'account_balance'>
   ) {
     return this._walletAccount.model.userWallet.update({

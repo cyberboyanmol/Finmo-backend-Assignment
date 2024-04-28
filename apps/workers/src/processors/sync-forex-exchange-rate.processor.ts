@@ -102,7 +102,7 @@ export class SyncForexExchangeRateProcessor extends WorkerHost {
       //     job.data.forex_exchange_rates_expires_at,
       // };
 
-      const promises = currencyCodesWithName.map(async (currency, index) => {
+      const promises = currencyCodesWithName.map(async (currency) => {
         const currency_exchange_rate_data =
           (await this._saveForexExchangeRateToRedisService.getForexExchangeRate(
             BASE_CURRENCY,

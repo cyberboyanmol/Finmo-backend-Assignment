@@ -23,12 +23,14 @@ import { QueueModule } from '@forexsystem/nestjs-libraries/bull-mq-queue/bull-mq
     BullMqModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT) || 6379,
+        port: parseInt(process.env.REDIS_PORT),
+        username: process.env.REDIS_USER,
+        password: process.env.REDIS_PASS,
       },
 
       defaultJobOptions: {
-        removeOnComplete: 1000,
-        removeOnFail: 5000,
+        removeOnComplete: { age: 200, count: 50 },
+        removeOnFail: { age: 200, count: 200 },
         attempts: 3,
       },
     }),

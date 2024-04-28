@@ -6,7 +6,7 @@ import { CreateUserDto } from '../../../dtos/auth/create-user.dto';
 export class UserRepository {
   constructor(private _user: PrismaRepository<'user'>) {}
 
-  getUserByEmail(email: string) {
+  findUserByEmail(email: string) {
     return this._user.model.user.findUnique({
       where: {
         email,

@@ -10,11 +10,8 @@ export interface Config {
   JWT_ACESS_TOKEN_COOKIE_EXPIRATION: number;
   JWT_ACCESS_TOKEN_SECRET: string;
   JWT_REFRESH_TOKEN_SECRET: string;
-  _BCRYPT_SECRET_PEPPER: string;
+  BCRYPT_SECRET_PEPPER: string;
   ALPHA_VANTAGE_API_KEYS: string;
-  //   SMTP_SERVICE: string;
-  //   SMTP_SERVICE_EMAIL: string;
-  //   SMTP_SERVICE_PASSWORD: string;
 }
 
 export interface serverConfig {

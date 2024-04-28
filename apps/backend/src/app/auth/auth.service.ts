@@ -1,8 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { UserService } from '@forexsystem/nestjs-libraries/dal/repositories/user/user.service';
 import { CreateUserDto } from '@forexsystem/nestjs-libraries/dtos/auth/create-user.dto';
 import { CryptoService } from '@forexsystem/helpers/auth/crypto.service';
 import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
+import { LoginDto } from '@forexsystem/nestjs-libraries/dtos/auth/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +21,7 @@ export class AuthService {
     const isUserExists = await this._userService.getUserByEmail(body.email);
 
     if (isUserExists) {
-      throw new BadRequestException(`User already exists`);
+      throw new ConflictException(`User already exists`);
     }
     const hashPassword = await CryptoService.generatehashPassword(
       body.password
@@ -47,12 +52,12 @@ export class AuthService {
     };
   }
 
-  async loginUser(body: Pick<CreateUserDto, 'email' | 'password'>) {
+  async loginUser(body: LoginDto) {
     // check if the user exists
     const user = await this._userService.getUserByEmail(body.email);
 
     if (!user) {
-      throw new BadRequestException('Invalid Credentials.');
+      throw new ForbiddenException('Invalid Credentials.');
     }
 
     const isPasswordMatch = await CryptoService.comparePassword(
@@ -62,9 +67,8 @@ export class AuthService {
 
     // verifying the password store in db
     if (!isPasswordMatch) {
-      throw new BadRequestException('Invalid Credentials.');
+      throw new ForbiddenException('Invalid Credentials.');
     }
-
     const {
       access_token,
       refresh_token,
@@ -74,6 +78,7 @@ export class AuthService {
       user_id: user.user_id,
     });
 
+    delete user.password;
     return {
       user,
       tokens: {

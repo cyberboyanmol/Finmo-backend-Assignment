@@ -1,12 +1,8 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@forexsystem/nestjs-libraries/config/config.service';
-import { WalletService } from '@forexsystem/nestjs-libraries/dal/repositories/wallet/wallet.service';
-import { TopupAccountDto } from '@forexsystem/nestjs-libraries/dtos/user-wallet/topup-account.dto';
 import { RedisService } from '@forexsystem/nestjs-libraries/dal/redis/redis.service';
 import {
   BASE_CURRENCY,
   CurrencyExchangeRate,
-  ForexExchangeRatesData,
   ForexExchangeRatesDbData,
   ForexExchangeRatesRedisData,
 } from '@forexsystem/helpers/interfaces';
@@ -189,14 +185,14 @@ export class ForexService {
           await this._forexExchangeRatesService.getLatestForexExchangeRates()
         )[0];
 
-    const exchangeRates = this.getExchangeRates(
+    const exchangeRates = this.getExchangeRatesForToCurrency(
       redisData,
       dbData,
       to_currency_code
     );
 
     if (!exchangeRates) {
-      throw new Error('Exchange rates not found');
+      throw new BadRequestException('Exchange rates not found');
     }
 
     const { toCurrencyExchangeRate } = exchangeRates;
@@ -216,7 +212,7 @@ export class ForexService {
   }
 
   //  THIS FUNCTION IS ONLY VALID FOR DEMO APIKEY OF ALPHAVANTAGE.CO
-  private getExchangeRates(
+  private getExchangeRatesForToCurrency(
     redisData: ForexExchangeRatesRedisData | null,
     dbData: ForexExchangeRatesDbData | null,
     toCurrencyCode: CurrencyCode

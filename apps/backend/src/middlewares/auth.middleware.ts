@@ -5,12 +5,9 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CryptoService } from '@forexsystem/helpers/auth/crypto.service';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
-
-interface AuthenticatedRequest extends Request {
-  user: { user_id: string };
-}
+import { AuthenticatedRequest } from '../interfaces/auth-request.interface';
 
 export class AuthMiddleware implements NestMiddleware {
   private logger = new Logger(AuthMiddleware.name);
