@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "npx nx run-many --target=serve --projects=backend,cron,workers --parallel=3\"",
+    "dev": "npx nx run-many --target=serve --projects=workers,cron,backend --parallel=3\"",
     "workers": "npx nx run workers:serve:development",
     "backend": "npx nx run backend:serve:development",
     "cron": "npx nx run cron:serve:development",
