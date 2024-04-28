@@ -29,7 +29,10 @@ export const loadSwagger = (app: INestApplication) => {
       'JWT'
     )
     .addServer('http://localhost:9000', 'development')
-    .addServer('https://forex-trading-system.com', 'Production')
+    .addServer(
+      'https://forex-trading-system-assignment-production.up.railway.app',
+      'Production'
+    )
     .setVersion('1.0')
     .build();
 
