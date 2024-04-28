@@ -1,0 +1,9 @@
+{
+  "name": "libraries-helpers",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libraries/helpers/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project libraries-helpers --web",
+  "targets": {}
+}

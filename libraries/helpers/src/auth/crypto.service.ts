@@ -114,6 +114,8 @@ export class CryptoService {
       process.env.JWT_ACCESS_TOKEN_SECRET!,
       options
     ) as { user_id: string };
+
+    console.log(decoded);
     return decoded;
   }
 

@@ -6,7 +6,7 @@ import { CreateUserDto } from '../../../dtos/auth/create-user.dto';
 export class UserService {
   constructor(private _userRepository: UserRepository) {}
 
-  getUserByEmail(email: string) {
+  async getUserByEmail(email: string) {
     return this._userRepository.findUserByEmail(email);
   }
 

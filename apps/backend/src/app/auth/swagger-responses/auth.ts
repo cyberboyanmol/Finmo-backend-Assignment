@@ -35,3 +35,20 @@ export class RegisterOKResponse {
   @ApiProperty()
   tokens: Tokens;
 }
+
+export class RefreshResponse {
+  @ApiProperty({
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMWJhYjQ1MDktZTNkOS00MWM2LWIzNGQtOTAxYmQ3MTRiNzk2IiwiaWF0IjoxNzE0MjcyNTk5LCJleHAiOjE3MTQyNzYxOTksImF1ZCI6InVzZXJfMWJhYjQ1MDktZTNkOS00MWM2LWIzNGQtOTAxYmQ3MTRiNzk2IiwiaXNzIjoiRm9yZXgtVHJhZGluZy1TeXN0ZW0iLCJzdWIiOiJhY2Nlc3NUb2tlbiJ9.7N0Ffe_qNW802Y5LwwDERUwwun5loMDs9a1Mnm-dS8A',
+  })
+  access_token: string;
+  @ApiProperty({
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMWJhYjQ1MDktZTNkOS00MWM2LWIzNGQtOTAxYmQ3MTRiNzk2IiwiaWF0IjoxNzE0MjcyNTk5LCJleHAiOjE3MTQ4NzczOTksImF1ZCI6InVzZXJfMWJhYjQ1MDktZTNkOS00MWM2LWIzNGQtOTAxYmQ3MTRiNzk2IiwiaXNzIjoiRm9yZXgtVHJhZGluZy1TeXN0ZW0iLCJzdWIiOiJyZWZyZXNoVG9rZW4ifQ.eUrE7ehuyfQ1LN0Un6njh_r4r_NQcyv6NFaRhEpfkYo',
+  })
+  refreshToken: string;
+  @ApiProperty({ example: '2024-04-28T03:49:59.289Z' })
+  access_token_expires_at: string;
+  @ApiProperty({ example: '2024-04-28T03:49:59.289Z' })
+  refresh_token_expires_at: string;
+}

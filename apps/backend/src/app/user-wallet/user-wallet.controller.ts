@@ -14,6 +14,7 @@ import { UserWalletService } from './user-wallet.service';
 import { AuthenticatedRequest } from '../../interfaces/auth-request.interface';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -36,7 +37,7 @@ export class UserWalletController {
     summary:
       'This API allows users to top up their account with a specified amount in a given currency.',
     description:
-      'This API allows users to top up their account with a specified amount in a given currency.  NOTE : **Currently this api endpoint only supports USD,JPY Currency**',
+      'This API allows users to top up their account with a specified amount in a given currency.  NOTE : **Currently this api endpoint only supports JPY Currency**',
   })
   @ApiOkResponse({
     description: 'It Return the updated user wallet balance',
@@ -45,6 +46,7 @@ export class UserWalletController {
   @ApiBadRequestResponse({
     description: 'Some character error or type error',
   })
+  @ApiBearerAuth('JWT')
   async topupAccount(
     @Req() req: AuthenticatedRequest,
     @Body() body: TopupAccountDto
@@ -66,6 +68,7 @@ export class UserWalletController {
   @ApiBadRequestResponse({
     description: 'Some character error or type error',
   })
+  @ApiBearerAuth('JWT')
   @Get('balance')
   @HttpCode(HttpStatus.OK)
   async getUserBalance(

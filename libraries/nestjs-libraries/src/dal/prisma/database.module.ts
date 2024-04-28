@@ -7,6 +7,8 @@ import { ForexExchangeRatesService } from '../repositories/forex-exchange-rates/
 import { RedisModule } from '../redis/redis.module';
 import { WalletRepository } from '../repositories/wallet/wallet.repository';
 import { WalletService } from '../repositories/wallet/wallet.service';
+import { RefreshTokenRepository } from '../repositories/refresh/refresh.repository';
+import { RefreshTokenService } from '../repositories/refresh/refresh.service';
 
 @Global()
 @Module({
@@ -21,6 +23,8 @@ import { WalletService } from '../repositories/wallet/wallet.service';
     ForexExchangeRatesService,
     WalletRepository,
     WalletService,
+    RefreshTokenRepository,
+    RefreshTokenService,
   ],
   get exports() {
     return this.providers;
