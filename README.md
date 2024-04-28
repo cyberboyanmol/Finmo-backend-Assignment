@@ -51,7 +51,7 @@
 
 ### 1. Prerequisites
 
-- Node.js and Docker: Install the latest versions from their respective official websites: [Nodejs](s://nodejs.org/) and [Docker](s://docker.com).
+- Node.js and Docker: Install the latest versions from their respective official websites: [Nodejs](https://nodejs.org/) and [Docker](https://docker.com).
 
 ### 2. Project Setup:
 
@@ -68,7 +68,7 @@ Run the following command in your terminal to install the project's dependencies
   npm install
 ```
 
-### 4. Run the PostgreSQL and Redis Server using Docker:
+### 4. Run the PostgreSQL and Redis Server using Docker (optional):
 
 Run the following command to apply database migrations, ensuring your database schema is up-to-date:
 
