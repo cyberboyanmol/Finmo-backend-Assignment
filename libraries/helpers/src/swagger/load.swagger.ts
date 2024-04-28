@@ -33,7 +33,6 @@ export const loadSwagger = (app: INestApplication) => {
     .setVersion('1.0')
     .build();
 
-  console.log('this is swagger file');
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/v1/docs', app, document);
 };

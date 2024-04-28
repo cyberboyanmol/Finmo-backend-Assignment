@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "dev": "npx nx run-many --target=serve --projects=backend,cron,workers --parallel=3\"",
+    "workers": "npx nx run workers:serve:development",
+    "backend": "npx nx run backend:serve:development",
+    "cron": "npx nx run cron:serve:development",
     "prisma:generate": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma generate ",
     "prisma:studio": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma studio ",
     "prisma:db:push": "cd ./libraries/nestjs-libraries/src/dal/prisma && prisma db push",
