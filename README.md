@@ -409,6 +409,6 @@ If you encounter any issues or have questions while setting up this application,
 
 **Contact:**
 
-- **Email:** `anmolgangwar64+forex@gmail.com`
+- **Email:** `cyberboyanmol@gmail.com`
 
 # Happy Hacking! 🚀
